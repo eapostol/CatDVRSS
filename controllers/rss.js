@@ -184,8 +184,8 @@ function generateRSS(res){
 	var feed = new RSS({
 	    title: 'E.W.Scripps Breaking News',
 	    description: 'description',
-	    feed_url: 'http://'+catdv_url+':3000/rss/BreakingNews',
-	    site_url: 'http://'+catdv_url+':3000',
+	    feed_url: 'http://'+catdv_url+':8082/rss/BreakingNews',
+	    site_url: 'http://'+catdv_url+':8082',
 	    image_url: 'http://example.com/icon.png',
 	    copyright: '2015 E.W. Scripps',
 	    language: 'en',
