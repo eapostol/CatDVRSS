@@ -153,15 +153,17 @@ function generateRSS(res){
 		  });
 		  res.on('end', function(){
 		  	var clipData = JSON.parse(body).data
+		  	// console.log("ID= " )
 		  	if(clipData.userFields !== null && typeof clipData.userFields !== "undefined" ){
 		  		var description = (typeof clipData.userFields.U1 !== "undefined" ?
 		  		 clipData.userFields.U1.replace(/\n/g, "<br/>").replace(/\[pi\](.*?)\[\/pi\]/g, '<b>$1</b>').replace(/\[cc\](.*?)\[\/cc\]/g, '<i>$1</i>').replace(/\[.*?\]/g, '') : "No Script Found");
 				feed.item({
-				    title:  clipData.userFields.U5 + "-" + clipData.name,
+				    title:  clipData.userFields.U5 + " " + (typeof clipData.userFields.U6 !== "undefined" && clipData.userFields.U6 !== "" ? clipData.userFields.U6 : clipData.name),
 				    description: description,
 				    url: 'http://'+catdv_url+':'+catdv_port+'/catdv-web2/clip-details.jsp?id='+clipData.ID, // link to the item
 				    author: clipData.userFields.U5, // optional - defaults to feed author property
-				    date: clipData.modifiedDate, // any format that js Date can parse.
+				    date: (typeof clipData.userFields.modifiedDate !== "undefined" ? clipData.modifiedDate : ""), // any format that js Date can parse.
+				    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
 				});
 			}
 			else console.log('clip ' + clipData.ID + ": NO USER FIELDS!!! SKIPPED!!")
