@@ -232,6 +232,11 @@ exports.breakingNews = function(req, res) {
 				function()
 				{
 					generateRSS(res);
+				}, 
+				function(){
+					var msg = [{error: "Login_failed"}];
+				    res.set('Content-Type', 'application/json');
+				    res.send(msg);
 				}
 			);
 		}
