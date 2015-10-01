@@ -21,6 +21,9 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var assets = require('connect-assets');
 
+var dateUtils = require('date-utils');
+
+
 /**
  * Controllers (route handlers).
  */
@@ -76,7 +79,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(lusca({
-  csrf: true,
+  csrf: false,
   xframe: 'SAMEORIGIN',
   xssProtection: true
 }));
@@ -117,8 +120,9 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
  */
 app.get('/rss/', rssController.index); // list of available rss feeds
 app.get('/rss/BreakingNews', rssController.breakingNews);
-app.get('/rss/BreakingNews.rss', rssController.breakingNews);
-app.get('/rss/BreakingNews.xml', rssController.breakingNews);
+app.get('/rss/newItem', rssController.createItem);
+app.post('/rss/newItem', rssController.postItem);
+app.post('/rss/delete', rssController.deleteItem);
 
 
 /**

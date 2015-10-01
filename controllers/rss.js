@@ -7,6 +7,20 @@ var RSS = require('rss');
 var http = require('http');
 var when = require('when');
 var config = require('../catdv_config');
+var mongoose = require('mongoose');
+
+
+//define the schema
+var feedItemSchema = new mongoose.Schema({
+  feed: { type: String, default: 'Breaking News' },
+  title: String,
+  summary: String,
+  created_at: Date,
+  expires_at: Date //hours
+
+});
+//define the model based on the schema
+var Item = mongoose.model('Item', feedItemSchema);
 
 var catdv_url = config.catdv_url;
 var catdv_port = config.catdv_port;
@@ -98,7 +112,8 @@ function encryptPwd(pwd, pubkey){
 	return powmod( decodeURIComponent(escape(pwd)), pubkey.split(":")[0], pubkey.split(":")[1]);
 }
 
-function generateRSS(res){
+function generateRSS(catalogID, feedname, res){
+	console.log(feedname);
 
 
 	function getClipsFromCat(catalogID, num, callback){
@@ -162,7 +177,7 @@ function generateRSS(res){
 				    description: description,
 				    url: 'http://'+catdv_url+':'+catdv_port+'/catdv-web2/clip-details.jsp?id='+clipData.ID, // link to the item
 				    author: clipData.userFields.U5, // optional - defaults to feed author property
-				    date: (typeof clipData.userFields.modifiedDate !== "undefined" ? clipData.modifiedDate : ""), // any format that js Date can parse.
+				    date: (typeof clipData.userFields.modifiedDate !== "undefined" ? clipData.modifiedDate : null), // any format that js Date can parse.
 				    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
 				});
 			}
@@ -182,22 +197,47 @@ function generateRSS(res){
 		return deferred.promise
 	}
 
+	function getAddedItems(name, callback){
+		console.log(name);
+		Item.find({feed: name})
+		.where('expires_at').gt(Date.now())
+		.exec(function(err, items){
+			if(err) console.error(err);
+			else{
+				for (var i = 0; i < items.length; i++ ){
+
+					console.log(items[i].title);
+					feed.item({
+					    title:  items[i].title,
+					    description:  items[i].summary,
+					    url:  "/", // link to the item
+					    author: "Self",
+					    date: items[i].created_at, // any format that js Date can parse.
+					    guid: (typeof items[i].guid !== "undefined" ? items[i].guid : items[i].created_at.toFormat("YYMMDDHHMISSPP"))
+					});
+				}
+			}
+			callback();
+		});
+	}
 	/* create an rss feed */
 	var feed = new RSS({
 	    title: 'E.W.Scripps Breaking News',
 	    description: 'description',
 	    feed_url: 'http://'+catdv_url+':8082/rss/BreakingNews',
 	    site_url: 'http://'+catdv_url+':8082',
-	    image_url: 'http://example.com/icon.png',
+	    //image_url: 'http://example.com/icon.png',
 	    copyright: '2015 E.W. Scripps',
 	    language: 'en',
 	    ttl: '60',
 	});
 
-	getClipsFromCat(1727, 20, function(){
-			var xml = feed.xml();
-		    res.set('Content-Type', 'application/rss+xml');
-		    res.send(xml);
+	getClipsFromCat(catalogID, 20, function(){
+			getAddedItems(feedname, function(){
+				var xml = feed.xml();
+			    res.set('Content-Type', 'application/rss+xml');
+			    res.send(xml);
+			});
 		} );
 	
 	/*feed.item({
@@ -231,7 +271,7 @@ exports.breakingNews = function(req, res) {
 			login_catdv(
 				function()
 				{
-					generateRSS(res);
+					generateRSS(1727, "Breaking News", res);
 				}, 
 				function(){
 					var msg = [{error: "Login_failed"}];
@@ -245,8 +285,84 @@ exports.breakingNews = function(req, res) {
 };
 
 exports.index = function(req, res) {
-  res.render('rssIndex', {
-    title: 'RSS'
+	Item.find({}).sort({"created_at": "descending"}).exec(
+		function(err, items){
+		if(err) return console.error(err);
+		//console.log(items);
+		res.render('rssIndex', {
+		    title: 'RSS', bns: items
+		});
+	});
+	
+};
+
+
+exports.createItem = function(req, res) {
+  res.render('rssNew', {
+    title: 'RSS - New Item', token: "1234"
   });
 	
 };
+
+
+/**
+ * POST /rss/newItem
+ * create a new RSS item.
+ */
+exports.postItem = function(req, res) {
+  req.assert('title', 'Title cannot be blank').notEmpty();
+  req.assert('station', 'Station cannot be blank').notEmpty();
+  req.assert('summary', 'Summary cannot be blank').notEmpty();
+  req.assert('feed', 'Feed cannot be blank').notEmpty();
+  req.assert('expires', 'Experation must be an integer in days').isInt();
+  
+  //req.assert('link', 'Message cannot be blank').notEmpty();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/rss/newItem');
+  }
+
+
+  console.log("expires in " + parseInt(req.body.expires));
+  var thisItem = new Item({ 
+  	feed: req.body.feed,
+  	title: req.body.station + " - " + req.body.title,
+  	summary: req.body.summary,
+  	created_at: Date.now(),
+  	expires_at: new Date(Date.now()).addDays(parseInt(req.body.expires)).getTime()
+  });
+
+  thisItem.save(function (err, thisItem) {
+	  if (err){
+    	req.flash('errors', errors);
+    	return res.redirect('/rss/newItem');
+	  }
+	  //fluffy.speak();
+	  return res.redirect('/rss/');
+  });
+
+  var title = req.body.title;
+  var summary = req.body.summary;
+  var feed = req.body.feed;
+
+    console.log(req.body.title);
+    console.log(req.body.summary);
+
+	//return res.redirect('/rss/');
+  //submit new item
+  
+};
+
+
+exports.deleteItem = function(req, res) {
+  req.assert('id', 'ID cannot be blank').notEmpty();
+  Item.find({ _id:req.body.id }).remove(function(err){
+  	//console.log(items);
+  	console.log("Delete: " + req.body.id)
+  	res.redirect('/rss');
+  })
+
+}

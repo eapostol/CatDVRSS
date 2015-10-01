@@ -4,5 +4,27 @@ block links
 
 block content
   h1 EW Scripps CatDV RSS feeds
-  p.lead 
-    a(href='/rss/BreakingNews') Breaking News
+  ul.list-unstyled.lead
+    li
+     a(href='/rss/BreakingNews') Breaking News
+    li
+     a(href='/rss/Shared') Shared
+    li
+     a(href='/rss/Enterprise') Enterprise
+    li
+     a(href='/rss/TheNow') The Now
+  hr
+  h2 Manual entries
+  ul.list-unstyled
+    for item in bns
+      li!= item.feed + " - " + item.title + " - " + item.created_at.toFormat('MM/DD/YYYY HH:MI PP') + " - " +  (item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP') + " "
+        form.form-inline(name="delete", action="/rss/delete", method="post")
+            input(type="hidden", name="id", value="#{item.id}")
+            button.btn-link.btn-red(type="submit", title="Delete")
+              i.fa.fa-close
+    else
+      li sorry, no items!
+
+  a(href='/rss/newItem') 
+    i.fa.fa-plus
+    New entry

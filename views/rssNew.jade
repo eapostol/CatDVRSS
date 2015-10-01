@@ -1,0 +1,34 @@
+extends layout
+block links
+  link(rel="alternate", type="application/rss+xml", title="Breaking News", href="/rss/BreakingNews.xml")
+
+block content
+  h1 EW Scripps CatDV RSS create item
+  p.lead 
+
+    form.form(name="add-item", method="post")
+
+        input(type='hidden', name='_csrf', value=token)
+        div.form-group
+            label Feed
+            select.form-control(type="select", name="feed")
+                option Breaking News
+                option Shared
+                option Enterprise
+                option The Now
+            //- input.form-control(type="text", name="feed")
+        div.form-group
+            label Station
+            input.form-control(type="text", name="station", placeholder="XXXX")
+        div.form-group
+            label Title
+            input.form-control(type="text", name="title")
+        div.form-group
+            label Summary
+            textarea.form-control(name="summary", cols="40", rows="5")
+        div.form-group
+            label Expires
+            input.form-control(type="text", name="expires")
+            small (days)
+        div.form-group
+            input.btn.btn-default(type="submit", value="add")
