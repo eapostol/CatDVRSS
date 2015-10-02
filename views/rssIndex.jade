@@ -3,16 +3,15 @@ block links
   link(rel="alternate", type="application/rss+xml", title="Breaking News", href="/rss/BreakingNews.xml")
 
 block content
-  h1 EW Scripps CatDV RSS feeds
+  //- img(src="/images/Scripps_Family_Frist_Logo_FINAL.png")
+  h1 RSS feeds
   ul.list-unstyled.lead
-    li
-     a(href='/rss/BreakingNews') Breaking News
-    li
-     a(href='/rss/Shared') Shared
-    li
-     a(href='/rss/Enterprise') Enterprise
-    li
-     a(href='/rss/TheNow') The Now
+
+    for feed in feeds
+      li
+       a(href='/rss/feed?rss=#{feed.title}') #{feed.display}
+    else
+      li no feeds found. 
   hr
   h2 Manual entries
   ul.list-unstyled

@@ -3,7 +3,8 @@ block links
   link(rel="alternate", type="application/rss+xml", title="Breaking News", href="/rss/BreakingNews.xml")
 
 block content
-  h1 EW Scripps CatDV RSS create item
+  //- img(src="/images/Scripps_Family_Frist_Logo_FINAL.png")
+  h1 Create RSS item
   p.lead 
 
     form.form(name="add-item", method="post")
@@ -12,10 +13,15 @@ block content
         div.form-group
             label Feed
             select.form-control(type="select", name="feed")
-                option Breaking News
-                option Shared
-                option Enterprise
-                option The Now
+
+              for feed in feeds
+                option #{feed.display}
+              else
+                option no feeds found. 
+              //- option Breaking News
+              //- option Shared
+              //- option Enterprise
+              //- option The Now
             //- input.form-control(type="text", name="feed")
         div.form-group
             label Station
@@ -28,7 +34,7 @@ block content
             textarea.form-control(name="summary", cols="40", rows="5")
         div.form-group
             label Expires
-            input.form-control(type="text", name="expires")
+            input.form-control(type="text", name="expires", value="2")
             small (days)
         div.form-group
             input.btn.btn-default(type="submit", value="add")

@@ -10,6 +10,14 @@ var config = require('../catdv_config');
 var mongoose = require('mongoose');
 
 
+var feeds = [
+	{title: "BreakingNews", catID: 1727, display: "Breaking News" },
+	{title: "Shared", catID: 1234, display: "Shared" },
+	{title: "Enterprise", catID: 1234, display: "Enterprise" },
+	{title: "TheNow", catID: 1234, display: "The Now" }
+]
+
+
 //define the schema
 var feedItemSchema = new mongoose.Schema({
   feed: { type: String, default: 'Breaking News' },
@@ -112,8 +120,8 @@ function encryptPwd(pwd, pubkey){
 	return powmod( decodeURIComponent(escape(pwd)), pubkey.split(":")[0], pubkey.split(":")[1]);
 }
 
-function generateRSS(catalogID, feedname, res){
-	console.log(feedname);
+function generateRSS(feedInfo, res){
+	console.log(feedInfo.display);
 
 
 	function getClipsFromCat(catalogID, num, callback){
@@ -222,9 +230,9 @@ function generateRSS(catalogID, feedname, res){
 	}
 	/* create an rss feed */
 	var feed = new RSS({
-	    title: 'E.W.Scripps Breaking News',
+	    title: 'E.W.Scripps ' + feedInfo.display,
 	    description: 'description',
-	    feed_url: 'http://'+catdv_url+':8082/rss/BreakingNews',
+	    feed_url: 'http://'+catdv_url+':8082/rss/feed?rss='+feedInfo.title,
 	    site_url: 'http://'+catdv_url+':8082',
 	    //image_url: 'http://example.com/icon.png',
 	    copyright: '2015 E.W. Scripps',
@@ -232,8 +240,8 @@ function generateRSS(catalogID, feedname, res){
 	    ttl: '60',
 	});
 
-	getClipsFromCat(catalogID, 20, function(){
-			getAddedItems(feedname, function(){
+	getClipsFromCat(feedInfo.catID, 20, function(){
+			getAddedItems(feedInfo.display, function(){
 				var xml = feed.xml();
 			    res.set('Content-Type', 'application/rss+xml');
 			    res.send(xml);
@@ -264,14 +272,31 @@ function generateRSS(catalogID, feedname, res){
 
 	// cache the xml to send to clients
 }
-exports.breakingNews = function(req, res) {
 
+function findFeedByName(name){
+	for(var i = 0 ; i < feeds.length; i++){
+		console.log(feeds[i].title + " vs " + name);
+		if(feeds[i].title === name) return feeds[i];
+	}
+	return null;
+}
+
+exports.getRSS  = function(req, res) {
+
+	console.log(req.query.rss)
+	console.log(findFeedByName(req.query.rss))
+	var feed = findFeedByName(req.query.rss)
 	getPubKey( function( key )
 		{ 
 			login_catdv(
 				function()
 				{
-					generateRSS(1727, "Breaking News", res);
+					if(feed != null) generateRSS(feed, res);
+					else {
+						var msg = [{error: "Feed not found: " + req.query.rss}];
+					    res.set('Content-Type', 'application/json');
+					    res.send(msg);
+					}
 				}, 
 				function(){
 					var msg = [{error: "Login_failed"}];
@@ -290,7 +315,7 @@ exports.index = function(req, res) {
 		if(err) return console.error(err);
 		//console.log(items);
 		res.render('rssIndex', {
-		    title: 'RSS', bns: items
+		    title: 'RSS', bns: items, feeds: feeds
 		});
 	});
 	
@@ -299,7 +324,7 @@ exports.index = function(req, res) {
 
 exports.createItem = function(req, res) {
   res.render('rssNew', {
-    title: 'RSS - New Item', token: "1234"
+    title: 'RSS - New Item', feeds: feeds
   });
 	
 };

@@ -119,7 +119,7 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
  * Custom routes
  */
 app.get('/rss/', rssController.index); // list of available rss feeds
-app.get('/rss/BreakingNews', rssController.breakingNews);
+app.get('/rss/feed', rssController.getRSS);
 app.get('/rss/newItem', rssController.createItem);
 app.post('/rss/newItem', rssController.postItem);
 app.post('/rss/delete', rssController.deleteItem);
