@@ -123,6 +123,7 @@ app.get('/rss/feed', rssController.getRSS);
 app.get('/rss/newItem', rssController.createItem);
 app.post('/rss/newItem', rssController.postItem);
 app.post('/rss/delete', rssController.deleteItem);
+app.get('/rss/:id', rssController.getItem);
 
 
 /**

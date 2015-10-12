@@ -309,13 +309,49 @@ exports.getRSS  = function(req, res) {
 	
 };
 
+
+exports.getItem  = function(req, res) {
+
+	Item.findOne({_id : req.params.id}, function(err, item){
+		if(err) return console.error(err);
+		//console.log(items);
+		res.render('rss/show', {
+		    title: 'RSS', item: item
+		});
+	});
+	console.log(req.params.id)
+	// console.log(findFeedByName(req.query.rss))
+	// var feed = findFeedByName(req.query.rss)
+	// getPubKey( function( key )
+	// 	{ 
+	// 		login_catdv(
+	// 			function()
+	// 			{
+	// 				if(feed != null) generateRSS(feed, res);
+	// 				else {
+	// 					var msg = [{error: "Feed not found: " + req.query.rss}];
+	// 				    res.set('Content-Type', 'application/json');
+	// 				    res.send(msg);
+	// 				}
+	// 			}, 
+	// 			function(){
+	// 				var msg = [{error: "Login_failed"}];
+	// 			    res.set('Content-Type', 'application/json');
+	// 			    res.send(msg);
+	// 			}
+	// 		);
+	// 	}
+	// );
+	
+};
+
 exports.index = function(req, res) {
 	Item.find({}).sort({"created_at": "descending"}).exec(
 		function(err, items){
 		if(err) return console.error(err);
 		//console.log(items);
-		res.render('rssIndex', {
-		    title: 'RSS', bns: items, feeds: feeds
+		res.render('rss/index', {
+		    title: 'RSS', items: items, feeds: feeds
 		});
 	});
 	
@@ -323,7 +359,7 @@ exports.index = function(req, res) {
 
 
 exports.createItem = function(req, res) {
-  res.render('rssNew', {
+  res.render('rss/new', {
     title: 'RSS - New Item', feeds: feeds
   });
 	

@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 block links
   link(rel="alternate", type="application/rss+xml", title="Breaking News", href="/rss/BreakingNews.xml")
 
@@ -15,8 +15,9 @@ block content
   hr
   h2 Manual entries
   ul.list-unstyled
-    for item in bns
-      li!= item.feed + " - " + item.title + " - " + item.created_at.toFormat('MM/DD/YYYY HH:MI PP') + " - " +  (item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP') + " "
+    for item in items
+      li(id="#{item.id}")
+        a(href="/rss/#{item.id}")!= item.feed + " - " + item.title + " - " + item.created_at.toFormat('MM/DD/YYYY HH:MI PP') + " - " +  (item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP') + " "
         form.form-inline(name="delete", action="/rss/delete", method="post")
             input(type="hidden", name="id", value="#{item.id}")
             button.btn-link.btn-red(type="submit", title="Delete")
