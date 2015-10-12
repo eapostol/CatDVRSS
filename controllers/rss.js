@@ -23,6 +23,7 @@ var feedItemSchema = new mongoose.Schema({
   feed: { type: String, default: 'Breaking News' },
   title: String,
   summary: String,
+  link: String,
   created_at: Date,
   expires_at: Date //hours
 
@@ -121,7 +122,7 @@ function encryptPwd(pwd, pubkey){
 }
 
 function generateRSS(feedInfo, res){
-	console.log(feedInfo.display);
+	//onsole.log(feedInfo.display);
 
 
 	function getClipsFromCat(catalogID, num, callback){
@@ -206,7 +207,7 @@ function generateRSS(feedInfo, res){
 	}
 
 	function getAddedItems(name, callback){
-		console.log(name);
+		//console.log(name);
 		Item.find({feed: name})
 		.where('expires_at').gt(Date.now())
 		.exec(function(err, items){
@@ -214,11 +215,11 @@ function generateRSS(feedInfo, res){
 			else{
 				for (var i = 0; i < items.length; i++ ){
 
-					console.log(items[i].title);
+					//console.log(items[i].title);
 					feed.item({
 					    title:  items[i].title,
 					    description:  items[i].summary,
-					    url:  "/", // link to the item
+					    url:  (typeof items[i].link !== "undefined" ? items[i].link : "/"), // link to the item
 					    author: "Self",
 					    date: items[i].created_at, // any format that js Date can parse.
 					    guid: (typeof items[i].guid !== "undefined" ? items[i].guid : items[i].created_at.toFormat("YYMMDDHHMISSPP"))
@@ -275,7 +276,7 @@ function generateRSS(feedInfo, res){
 
 function findFeedByName(name){
 	for(var i = 0 ; i < feeds.length; i++){
-		console.log(feeds[i].title + " vs " + name);
+		//console.log(feeds[i].title + " vs " + name);
 		if(feeds[i].title === name) return feeds[i];
 	}
 	return null;
@@ -283,8 +284,6 @@ function findFeedByName(name){
 
 exports.getRSS  = function(req, res) {
 
-	console.log(req.query.rss)
-	console.log(findFeedByName(req.query.rss))
 	var feed = findFeedByName(req.query.rss)
 	getPubKey( function( key )
 		{ 
@@ -386,12 +385,11 @@ exports.postItem = function(req, res) {
     return res.redirect('/rss/newItem');
   }
 
-
-  console.log("expires in " + parseInt(req.body.expires));
   var thisItem = new Item({ 
   	feed: req.body.feed,
-  	title: req.body.station + " - " + req.body.title,
+  	title: req.body.station + " " + req.body.title,
   	summary: req.body.summary,
+  	link: req.body.link,
   	created_at: Date.now(),
   	expires_at: new Date(Date.now()).addDays(parseInt(req.body.expires)).getTime()
   });
@@ -401,19 +399,12 @@ exports.postItem = function(req, res) {
     	req.flash('errors', errors);
     	return res.redirect('/rss/newItem');
 	  }
-	  //fluffy.speak();
 	  return res.redirect('/rss/');
   });
 
   var title = req.body.title;
   var summary = req.body.summary;
   var feed = req.body.feed;
-
-    console.log(req.body.title);
-    console.log(req.body.summary);
-
-	//return res.redirect('/rss/');
-  //submit new item
   
 };
 
@@ -421,7 +412,6 @@ exports.postItem = function(req, res) {
 exports.deleteItem = function(req, res) {
   req.assert('id', 'ID cannot be blank').notEmpty();
   Item.find({ _id:req.body.id }).remove(function(err){
-  	//console.log(items);
   	console.log("Delete: " + req.body.id)
   	res.redirect('/rss');
   })

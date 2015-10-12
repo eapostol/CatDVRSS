@@ -11,13 +11,19 @@ block content
       li
        a(href='/rss/feed?rss=#{feed.title}') #{feed.display}
     else
-      li no feeds found. 
+      li no feeds found.
   hr
   h2 Manual entries
   ul.list-unstyled
+<<<<<<< HEAD:views/rss/index.jade
     for item in items
       li(id="#{item.id}")
         a(href="/rss/#{item.id}")!= item.feed + " - " + item.title + " - " + item.created_at.toFormat('MM/DD/YYYY HH:MI PP') + " - " +  (item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP') + " "
+=======
+    for item in bns
+      li(title="Summary: #{item.summary}\n\ncreated_at: #{item.created_at.toFormat('MM/DD/YYYY HH:MI PP')}\nexpires_at: #{(item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP')}")!= item.feed + " - " + item.title + " " 
+        //- + " - " + item.created_at.toFormat('MM/DD/YYYY HH:MI PP') + " - " +  (item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP') + " "
+>>>>>>> origin/master:views/rssIndex.jade
         form.form-inline(name="delete", action="/rss/delete", method="post")
             input(type="hidden", name="id", value="#{item.id}")
             button.btn-link.btn-red(type="submit", title="Delete")
