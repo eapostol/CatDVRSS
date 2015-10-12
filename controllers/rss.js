@@ -219,7 +219,7 @@ function generateRSS(feedInfo, res){
 					feed.item({
 					    title:  items[i].title,
 					    description:  items[i].summary,
-					    url:  (typeof items[i].link !== "undefined" ? items[i].link : "/"), // link to the item
+					    url:  "http://"+config.this_host+":"+config.this_port+"/rss/" +items[i].id, //(typeof items[i].link !== "undefined" ? items[i].link : "/"), // link to the item
 					    author: "Self",
 					    date: items[i].created_at, // any format that js Date can parse.
 					    guid: (typeof items[i].guid !== "undefined" ? items[i].guid : items[i].created_at.toFormat("YYMMDDHHMISSPP"))
