@@ -11,12 +11,13 @@ block content
       li
        a(href='/rss/feed?rss=#{feed.title}') #{feed.display}
     else
-      li no feeds found. 
+      li no feeds found.
   hr
   h2 Manual entries
   ul.list-unstyled
     for item in bns
-      li!= item.feed + " - " + item.title + " - " + item.created_at.toFormat('MM/DD/YYYY HH:MI PP') + " - " +  (item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP') + " "
+      li(title="Summary: #{item.summary}\n\ncreated_at: #{item.created_at.toFormat('MM/DD/YYYY HH:MI PP')}\nexpires_at: #{(item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP')}")!= item.feed + " - " + item.title + " " 
+        //- + " - " + item.created_at.toFormat('MM/DD/YYYY HH:MI PP') + " - " +  (item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP') + " "
         form.form-inline(name="delete", action="/rss/delete", method="post")
             input(type="hidden", name="id", value="#{item.id}")
             button.btn-link.btn-red(type="submit", title="Delete")
