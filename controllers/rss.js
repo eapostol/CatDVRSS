@@ -8,7 +8,7 @@ var http = require('http');
 var when = require('when');
 var config = require('../catdv_config');
 var mongoose = require('mongoose');
-
+ var validUrl = require('valid-url');
 
 var feeds = [
 	{title: "BreakingNews", catID: 1727, display: "Breaking News" },
@@ -214,12 +214,17 @@ function generateRSS(feedInfo, res){
 			if(err) console.error(err);
 			else{
 				for (var i = 0; i < items.length; i++ ){
+					var url = items[i].link;
+				    if (!validUrl.isUri(url)){
+				    	console.log(url + " -==-----======= Not a vaild URL");
+				        url = "http://"+config.this_host+":"+config.this_port+"/rss/" +items[i].id;
+				    }
 
 					//console.log(items[i].title);
 					feed.item({
 					    title:  items[i].title,
 					    description:  items[i].summary,
-					    url:  "http://"+config.this_host+":"+config.this_port+"/rss/" +items[i].id, //(typeof items[i].link !== "undefined" ? items[i].link : "/"), // link to the item
+					    url:  url, //(typeof items[i].link !== "undefined" ? items[i].link : "/"), // link to the item
 					    author: "Self",
 					    date: items[i].created_at, // any format that js Date can parse.
 					    guid: (typeof items[i].guid !== "undefined" ? items[i].guid : items[i].created_at.toFormat("YYMMDDHHMISSPP"))
@@ -384,6 +389,7 @@ exports.postItem = function(req, res) {
     req.flash('errors', errors);
     return res.redirect('/rss/newItem');
   }
+  console.log("Link: " + req.body.link)
 
   var thisItem = new Item({ 
   	feed: req.body.feed,
