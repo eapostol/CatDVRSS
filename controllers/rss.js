@@ -14,7 +14,7 @@ var feeds = [
 	{title: "BreakingNews", catID: 1727, display: "Breaking News" },
 	{title: "Shared", catID: 1234, display: "Shared" },
 	{title: "Enterprise", catID: 1234, display: "Enterprise" },
-	{title: "TheNow", catID: 1234, display: "The Now" }
+	{title: "TheNow", catID: 3802, display: "The Now" }
 ]
 
 
@@ -216,8 +216,7 @@ function generateRSS(feedInfo, res){
 				for (var i = 0; i < items.length; i++ ){
 					var url = items[i].link;
 				    if (!validUrl.isUri(url)){
-				    	console.log(url + " -==-----======= Not a vaild URL");
-				        url = "http://"+config.this_host+":"+config.this_port+"/rss/" +items[i].id;
+			        url = "http://"+config.this_host+":"+config.this_port+"/rss/" +items[i].id;
 				    }
 
 					//console.log(items[i].title);
