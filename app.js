@@ -14,7 +14,7 @@ var methodOverride = require('method-override');
 
 var _ = require('lodash');
 var MongoStore = require('connect-mongo')(session);
-var flash = require('express-flash');
+// var flash = require('express-flash');
 var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -76,7 +76,7 @@ app.use(cookieParser());
 // }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
+// app.use(flash());
 app.use(lusca({
   csrf: false,
   xframe: 'SAMEORIGIN',
