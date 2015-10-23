@@ -392,8 +392,8 @@ exports.postItem = function(req, res) {
 
   var thisItem = new Item({ 
   	feed: req.body.feed,
-  	title: req.body.station + " " + req.body.title,
-  	summary: req.body.summary,
+  	title: escape(req.body.station) + " " + escape(req.body.title),
+  	summary: escape(req.body.summary),
   	link: req.body.link,
   	created_at: Date.now(),
   	expires_at: new Date(Date.now()).addDays(parseInt(req.body.expires)).getTime()
