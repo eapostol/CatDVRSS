@@ -8,7 +8,9 @@ var http = require('http');
 var when = require('when');
 var config = require('../catdv_config');
 var mongoose = require('mongoose');
- var validUrl = require('valid-url');
+var validUrl = require('valid-url');
+
+var expressValidator = require('express-validator');
 
 var feeds = [
 	{title: "BreakingNews", catID: 1727, display: "Breaking News" },
@@ -392,8 +394,8 @@ exports.postItem = function(req, res) {
 
   var thisItem = new Item({ 
   	feed: req.body.feed,
-  	title: escape(req.body.station) + " " + escape(req.body.title),
-  	summary: escape(req.body.summary),
+  	title: expressValidator.escape(req.body.station) + " " + expressValidator.escape(req.body.title),
+  	summary: expressValidator.escape(req.body.summary),
   	link: req.body.link,
   	created_at: Date.now(),
   	expires_at: new Date(Date.now()).addDays(parseInt(req.body.expires)).getTime()
