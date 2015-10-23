@@ -10,8 +10,6 @@ var config = require('../catdv_config');
 var mongoose = require('mongoose');
 var validUrl = require('valid-url');
 
-var expressValidator = require('express-validator');
-
 var feeds = [
 	{title: "BreakingNews", catID: 1727, display: "Breaking News" },
 	{title: "Shared", catID: 1234, display: "Shared" },
@@ -381,7 +379,9 @@ exports.postItem = function(req, res) {
   req.assert('summary', 'Summary cannot be blank').notEmpty();
   req.assert('feed', 'Feed cannot be blank').notEmpty();
   req.assert('expires', 'Experation must be an integer in days').isInt();
-  
+  req.sanitize('title').escape();
+  req.sanitize('station').escape();
+  req.sanitize('summary').escape();
   //req.assert('link', 'Message cannot be blank').notEmpty();
 
   var errors = req.validationErrors();
@@ -394,8 +394,8 @@ exports.postItem = function(req, res) {
 
   var thisItem = new Item({ 
   	feed: req.body.feed,
-  	title: expressValidator.escape(req.body.station) + " " + expressValidator.escape(req.body.title),
-  	summary: expressValidator.escape(req.body.summary),
+  	title: (req.body.station) + " " + (req.body.title),
+  	summary: (req.body.summary),
   	link: req.body.link,
   	created_at: Date.now(),
   	expires_at: new Date(Date.now()).addDays(parseInt(req.body.expires)).getTime()
