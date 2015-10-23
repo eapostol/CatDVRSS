@@ -382,6 +382,7 @@ exports.postItem = function(req, res) {
   req.sanitize('title').escape();
   req.sanitize('station').escape();
   req.sanitize('summary').escape();
+  req.body.summary = req.body.summary.replace(/(?:\r\n|\r|\n)/g, '<br />')
   //req.assert('link', 'Message cannot be blank').notEmpty();
 
   var errors = req.validationErrors();
