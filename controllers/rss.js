@@ -12,9 +12,10 @@ var validUrl = require('valid-url');
 
 var feeds = [
 	{title: "BreakingNews", catID: 1727, display: "Breaking News" },
-	{title: "Shared", catID: 1234, display: "Shared" },
-	{title: "Enterprise", catID: 1234, display: "Enterprise" },
-	{title: "TheNow", catID: 3802, display: "The Now" }
+	{title: "Shared", catID: 4102, display: "Shared" },
+	{title: "Enterprise", catID: 4130, display: "Enterprise" },
+	{title: "TheNow", catID: 3802, display: "The Now" },
+	{title: "DCBureau", catID: 1234, display: "DC Bureau" }
 ]
 
 
