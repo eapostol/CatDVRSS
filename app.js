@@ -14,7 +14,7 @@ var methodOverride = require('method-override');
 
 var _ = require('lodash');
 var MongoStore = require('connect-mongo')(session);
-// var flash = require('express-flash');
+var flash = require('express-flash');
 var path = require('path');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -68,15 +68,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(methodOverride());
 app.use(cookieParser());
-// app.use(session({
-//   resave: true,
-//   saveUninitialized: true,
-//   secret: secrets.sessionSecret,
-//   store: new MongoStore({ url: secrets.db, autoReconnect: true })
-// }));
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: secrets.sessionSecret,
+  store: new MongoStore({ url: secrets.db, autoReconnect: true })
+}));
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use(flash());
+app.use(flash());
 app.use(lusca({
   csrf: false,
   xframe: 'SAMEORIGIN',
@@ -96,7 +96,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 /**
  * Primary app routes.
  */
-app.get('/', homeController.index);
+// app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -111,6 +111,7 @@ app.post('/contact', contactController.postContact);
 /**
  * Custom routes
  */
+app.get('/', rssController.index);
 app.get('/rss/', rssController.index); // list of available rss feeds
 app.get('/rss/feed', rssController.getRSS);
 app.get('/rss/newItem', rssController.createItem);

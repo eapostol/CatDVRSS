@@ -236,7 +236,7 @@ function generateRSS(feedInfo, res){
 	/* create an rss feed */
 	var feed = new RSS({
 	    title: 'E.W.Scripps ' + feedInfo.display,
-	    description: 'description',
+	    description: feedInfo.display,
 	    feed_url: 'http://'+catdv_url+':8082/rss/feed?rss='+feedInfo.title,
 	    site_url: 'http://'+catdv_url+':8082',
 	    //image_url: 'http://example.com/icon.png',
@@ -376,13 +376,15 @@ exports.createItem = function(req, res) {
 exports.postItem = function(req, res) {
   req.assert('title', 'Title cannot be blank').notEmpty();
   req.assert('station', 'Station cannot be blank').notEmpty();
-  req.assert('summary', 'Summary cannot be blank').notEmpty();
+  req.assert('description', 'Description cannot be blank').notEmpty();
   req.assert('feed', 'Feed cannot be blank').notEmpty();
   req.assert('expires', 'Experation must be an integer in days').isInt();
+  
   req.sanitize('title').escape();
   req.sanitize('station').escape();
+  req.sanitize('summary').blacklist('\'"/')
   req.sanitize('summary').escape();
-  req.body.summary = req.body.summary.replace(/(?:\r\n|\r|\n)/g, '<br />')
+  req.body.description = req.body.description.replace(/(?:\n|\r|\n)/g, '<br />')
   //req.assert('link', 'Message cannot be blank').notEmpty();
 
   var errors = req.validationErrors();
@@ -393,10 +395,12 @@ exports.postItem = function(req, res) {
   }
   console.log("Link: " + req.body.link)
 
+  var summary = buildSummary(req.body);
+
   var thisItem = new Item({ 
   	feed: req.body.feed,
   	title: (req.body.station) + " " + (req.body.title),
-  	summary: (req.body.summary),
+  	summary: (summary),
   	link: req.body.link,
   	created_at: Date.now(),
   	expires_at: new Date(Date.now()).addDays(parseInt(req.body.expires)).getTime()
@@ -409,12 +413,17 @@ exports.postItem = function(req, res) {
 	  }
 	  return res.redirect('/rss/');
   });
-
-  var title = req.body.title;
-  var summary = req.body.summary;
-  var feed = req.body.feed;
-  
 };
+
+function buildSummary( body ){
+	var alltext = "<br/>\r\n";
+	alltext += "[Description:] " + body.description + "<br/>\r\n";
+	alltext += "[Source:] " + body.source + "<br/>\r\n";
+	alltext += "[Time:] " + body.time + "<br/>\r\n";
+	alltext += "[Timezone:] "+ body.tz + "<br/>\r\n";
+	alltext += "[Format:] " + body.format + "<br/>\r\n";
+	return alltext;
+}
 
 
 exports.deleteItem = function(req, res) {

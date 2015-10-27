@@ -10,8 +10,8 @@ block content
     form.form(name="add-item", method="post")
 
         input(type='hidden', name='_csrf', value=token)
-        div.form-group
-            label Feed
+        div.form-group.col-sm-6
+            label Channel
             select.form-control(type="select", name="feed")
 
               for feed in feeds
@@ -23,21 +23,54 @@ block content
               //- option Enterprise
               //- option The Now
             //- input.form-control(type="text", name="feed")
-        div.form-group
+        div.form-group.col-sm-6
             label Station
             input.form-control(type="text", name="station", placeholder="XXXX")
-        div.form-group
+        div.form-group.col-sm-12
             label Title
             input.form-control(type="text", name="title")
-        div.form-group
-            label Summary
-            textarea.form-control(name="summary", cols="40", rows="5")
-        div.form-group
+        div.form-group.col-sm-12
+            label Description
+            textarea.form-control(name="description", cols="40", rows="5")
+        div.form-group.col-sm-12
+            label Source
+            select.form-control(type="select", name="source", id="source-select")
+              option TVU Grid
+              option Hotchannel
+              option MasterCat
+              option Satellite Downlink
+        div.form-group.col-sm-12.collapse(id="downlink-fields")
+          div.form-group.col-sm-6
+            label Coordinates
+            input.form-control(type="text", name="coords", value="")
+          div.form-group.col-sm-6
+            label Polarity
+            input.form-control(type="text", name="polarity", value="")
+          div.form-group.col-sm-6
+            label Satellite
+            input.form-control(type="text", name="Satellite", value="")
+        div.form-group.col-sm-6
+            label Time
+            input.form-control(type="text", name="time", value="#{(new Date()).toFormat('HH:MI PP')}")
+        div.form-group.col-sm-6
+            label Timezone
+            input.form-control(type="text", id="tz", name="tz", value="")
+        div.form-group.col-sm-12
+            label Format
+            select.form-control(type="select", name="format")
+              option 
+              option VO
+              option VO/SOT
+              option PKG
+              option RAW
+        div.form-group.hidden.col-sm-12
             label Expires
             input.form-control(type="text", name="expires", value="2")
             small (days)
-        div.form-group
-            label Link
+        div.form-group.col-sm-12
+            label
+              |Link 
+              small (optional)
             input.form-control(type="text", name="link", placeholder="http://example.com/video?id=33")
         div.form-group
             input.btn.btn-default(type="submit", value="add")
