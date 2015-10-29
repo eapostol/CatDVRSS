@@ -320,7 +320,7 @@ exports.getItem  = function(req, res) {
 		if(err) return console.error(err);
 		//console.log(items);
 		res.render('rss/show', {
-		    title: 'RSS', item: item
+		    title: 'RSS', item: item,
 		});
 	});
 	console.log(req.params.id)

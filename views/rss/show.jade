@@ -2,5 +2,6 @@ extends ../layout
 
 block content
   h1 #{item.title}
-  h3 Description: #{item.summary}
-  h4 Location: #{item.link}
+  h3 !{item.summary}
+  if item.link !== ""
+    h4 Location: #{item.link}
