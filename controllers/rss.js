@@ -130,7 +130,7 @@ function generateRSS(feedInfo, res){
 		var options = {
 		  host: catdv_url,
 		  port: catdv_port,
-		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((clip.modifiedDate)newer(172800))', // OFF -- extra 0 for testing
+		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', // 
 		  method: 'GET'
 		};
 		var request = http.request(options, function(res) {
@@ -187,7 +187,7 @@ function generateRSS(feedInfo, res){
 				    description: description,
 				    url: 'http://'+catdv_url+':'+catdv_port+'/catdv-web2/clip-details.jsp?id='+clipData.ID, // link to the item
 				    author: clipData.userFields.U5, // optional - defaults to feed author property
-				    date: (typeof clipData.userFields.modifiedDate !== "undefined" ? clipData.modifiedDate : null), // any format that js Date can parse.
+				    date: (typeof clipData.recordedDate !== null ? clipData.recordedDate : Date.now()), // any format that js Date can parse.
 				    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
 				});
 			}
