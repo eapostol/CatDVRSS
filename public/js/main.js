@@ -9,10 +9,10 @@ Number.prototype.toUTCString = function () {
     var time    = sign + hours+':'+minutes+" UTC";
     return time;
 }
-
 $(document).ready(function() {
 
   //set timezone form field
+  $("input#time").val( moment().format("hh:mm a") );
   $("input#tz").val((new Date().getTimezoneOffset().toUTCString()));
 
   $("select#source-select").on("change", function(){

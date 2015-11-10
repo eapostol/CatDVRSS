@@ -15,5 +15,5 @@
 
 //= require lib/jquery-2.1.3.min
 //= require lib/bootstrap.min
-//= require lib/moment
+//= require lib/moment.min
 //= require main
