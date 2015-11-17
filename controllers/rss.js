@@ -15,7 +15,7 @@ var feeds = [
 	{title: "Shared", catID: 4102, display: "Shared" },
 	{title: "Enterprise", catID: 4130, display: "Enterprise" },
 	{title: "TheNow", catID: 3802, display: "The Now" },
-	{title: "DCBureau", catID: 1234, display: "DC Bureau" }
+	{title: "DCBureau", catID: 5652, display: "DC Bureau" }
 ]
 
 
