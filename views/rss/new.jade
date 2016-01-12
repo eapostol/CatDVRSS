@@ -11,7 +11,7 @@ block content
 
         input(type='hidden', name='_csrf', value=token)
         div.form-group.col-sm-6
-            label Channel
+            label Channel *
             select.form-control(type="select", name="feed")
 
               for feed in feeds
@@ -24,14 +24,20 @@ block content
               //- option The Now
             //- input.form-control(type="text", name="feed")
         div.form-group.col-sm-6
-            label Station
+            label Station *
             input.form-control(type="text", name="station", placeholder="XXXX")
         div.form-group.col-sm-12
-            label Title
+            label Title *
             input.form-control(type="text", name="title")
         div.form-group.col-sm-12
-            label Description
+            label Description/Script *
             textarea.form-control(name="description", cols="40", rows="5")
+        div.form-group.col-sm-6
+            label Reporter
+            input.form-control(type="text", name="reporter")
+        div.form-group.col-sm-6
+            label Location
+            input.form-control(type="text", name="location")
         div.form-group.col-sm-12
             label Source
             select.form-control(type="select", name="source", id="source-select")
@@ -39,23 +45,35 @@ block content
               option Hotchannel
               option MasterCat
               option Satellite Downlink
-        div.form-group.col-sm-12.collapse(id="downlink-fields")
-          div.form-group.col-sm-6
-            label Coordinates
-            input.form-control(type="text", name="coords", value="")
-          div.form-group.col-sm-6
-            label Polarity
-            input.form-control(type="text", name="polarity", value="")
+        div.form-group.col-sm-12.collapse(id="downlink-fields").well
           div.form-group.col-sm-6
             label Satellite
-            input.form-control(type="text", name="Satellite", value="")
+            input.form-control(type="text", name="satellite", value="")
+          div.form-group.col-sm-6
+            label Channel/Freq
+            input.form-control(type="text", name="channel", value="")
+          div.form-group.col-sm-6
+            label Polarity
+            select.form-control(type="select", name="polarity")
+              option 
+              option V
+              option H
+          div.form-group.col-sm-6
+            label FEC
+            input.form-control(type="text", name="fec", value="")
+          div.form-group.col-sm-6
+            label Symbol Rate
+            input.form-control(type="text", name="symbol", value="")
+          div.form-group.col-sm-6
+            label Data Rate
+            input.form-control(type="text", name="datarate", value="")
         div.form-group.col-sm-6
             label Time
             input.form-control(type="text", id="time", name="time", value="")
         div.form-group.col-sm-6
             label Timezone
             input.form-control(type="text", id="tz", name="tz", value="")
-        div.form-group.col-sm-12
+        div.form-group.col-sm-6
             label Format
             select.form-control(type="select", name="format")
               option 
@@ -63,6 +81,9 @@ block content
               option VO/SOT
               option PKG
               option RAW
+        div.form-group.col-sm-6
+            label TRT
+            input.form-control(type="text", name="trt", value="")
         div.form-group.hidden.col-sm-12
             label Expires
             input.form-control(type="text", name="expires", value="2")
