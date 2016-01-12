@@ -7,7 +7,7 @@ block content
   h1 Create RSS item
   p.lead 
 
-    form.form(name="add-item", method="post")
+    form.col-sm-10.well.form(name="add-item", method="post")
 
         input(type='hidden', name='_csrf', value=token)
         div.form-group.col-sm-6
@@ -45,7 +45,7 @@ block content
               option Hotchannel
               option MasterCat
               option Satellite Downlink
-        div.form-group.col-sm-12.collapse(id="downlink-fields").well
+        div.form-group.col-sm-12.collapse(id="downlink-fields").bg-warning
           div.form-group.col-sm-6
             label Satellite
             input.form-control(type="text", name="satellite", value="")
@@ -93,5 +93,6 @@ block content
               |Link 
               small (optional)
             input.form-control(type="text", name="link", placeholder="http://example.com/video?id=33")
-        div.form-group
-            input.btn.btn-default(type="submit", value="add")
+        div.form-group.col-sm-12
+        div.form-group.col-sm-12
+            input.btn.btn-primary(type="submit", value="Submit")
