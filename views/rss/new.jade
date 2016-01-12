@@ -67,6 +67,12 @@ block content
           div.form-group.col-sm-6
             label Data Rate
             input.form-control(type="text", name="datarate", value="")
+          div.form-group.col-sm-6
+            label Window Times
+            input.form-control(type="text", name="window", value="")
+          div.form-group.col-sm-6
+            label Troubleshooting Number
+            input.form-control(type="text", name="troubleNumber", value="")
         div.form-group.col-sm-6
             label Time
             input.form-control(type="text", id="time", name="time", value="")
@@ -77,10 +83,10 @@ block content
             label Format
             select.form-control(type="select", name="format")
               option 
-              option VO
               option VO/SOT
               option PKG
               option RAW
+              option LIVE
         div.form-group.col-sm-6
             label TRT
             input.form-control(type="text", name="trt", value="")

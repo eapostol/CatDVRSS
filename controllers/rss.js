@@ -428,6 +428,8 @@ function buildSummary( body ){
 		alltext += "-[FEC:] " + body.fec + "<br/>\r\n";
 		alltext += "-[Symbol Rate:] " + body.symbol + "<br/>\r\n";
 		alltext += "-[Data Rate:] " + body.datarate + "<br/>\r\n";
+		alltext += "-[Window Times:] " + body.window + "<br/>\r\n";
+		alltext += "-[Troubleshooting Number:] " + body.troubleNumber + "<br/>\r\n";
 	}
 
 	alltext += "[Time:] " + body.time + "<br/>\r\n";
