@@ -11,7 +11,7 @@ block content
 
         input(type='hidden', name='_csrf', value=token)
         div.form-group.col-sm-6
-            label Channel *
+            label Catalog *
             select.form-control(type="select", name="feed")
 
               for feed in feeds
@@ -83,6 +83,7 @@ block content
             label Format
             select.form-control(type="select", name="format")
               option 
+              option VO
               option VO/SOT
               option PKG
               option RAW
