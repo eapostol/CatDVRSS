@@ -430,7 +430,6 @@ function buildSummary( body ){
 	var alltext = "<br/>\r\n";
 	alltext += "[Description:] " + body.description + "<br/>\r\n";
 	alltext += "[Source:] " + body.source + "<br/>\r\n";
-
 	if(body.source == "Satellite Downlink"){
 		alltext += "-[Satellite:] " + body.satellite + "<br/>\r\n";
 		alltext += "-[Channel:] " + body.channel + "<br/>\r\n";
@@ -441,7 +440,8 @@ function buildSummary( body ){
 		alltext += "-[Window Times:] " + body.window + "<br/>\r\n";
 		alltext += "-[Troubleshooting Number:] " + body.troubleNumber + "<br/>\r\n";
 	}
-
+	alltext += "[Reporter:] " + body.reporter + "<br/>\r\n";
+	alltext += "[Location:] " + body.location + "<br/>\r\n";
 	alltext += "[Time:] " + body.time + "<br/>\r\n";
 	alltext += "[Timezone:] "+ body.tz + "<br/>\r\n";
 	alltext += "[Format:] " + body.format + "<br/>\r\n";
