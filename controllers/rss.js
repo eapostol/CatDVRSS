@@ -37,7 +37,7 @@ var catdv_port = config.catdv_port;
 var catdv_user = config.catdv_user;
 var catdv_pwd = config.catdv_pwd;
 var catdv_pubkey = '';
-var jsessionid = '';
+var jsessionid = null;
 
 //** NOTE catdv's provided library wont work because its client-side js requiring jquery
 //var CatDV = require('../libs/catdv-api');
@@ -50,6 +50,7 @@ function login_catdv( callback , failed_callback){
 	  //path: '/api/info',
 	  method: 'GET'
 	};
+	if( jsessionid !== null ) return callback("Already Logged in");
 	var request = http.request(options, function(res) {
 	  res.setEncoding('utf8');
 	  res.on('data', function (chunk) {
@@ -58,7 +59,7 @@ function login_catdv( callback , failed_callback){
 	  	}
 	  	catch ( error ){
 	  		console.log(chunk);
-	  		failed_callback(error);
+	  		return failed_callback(error);
 	  	}
 	  	if(body.status === "OK"){
 			jsessionid = body.data.jsessionid;
