@@ -53,7 +53,13 @@ function login_catdv( callback , failed_callback){
 	var request = http.request(options, function(res) {
 	  res.setEncoding('utf8');
 	  res.on('data', function (chunk) {
-	  	body = JSON.parse(chunk);
+	  	try{
+	  		body = JSON.parse(chunk);
+	  	}
+	  	catch ( error ){
+	  		console.log(chunk);
+	  		failed_callback(error);
+	  	}
 	  	if(body.status === "OK"){
 			jsessionid = body.data.jsessionid;
 	  		callback();
