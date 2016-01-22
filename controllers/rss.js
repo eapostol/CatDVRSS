@@ -50,7 +50,10 @@ function login_catdv( callback , failed_callback){
 	  //path: '/api/info',
 	  method: 'GET'
 	};
-	if( jsessionid !== null ) return callback("Already Logged in");
+	if( jsessionid !== null ){
+		return callback("Already Logged in");
+	} 
+	else console.log("no sess id logging in");
 	var request = http.request(options, function(res) {
 	  res.setEncoding('utf8');
 	  res.on('data', function (chunk) {
