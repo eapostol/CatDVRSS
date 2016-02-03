@@ -91,7 +91,7 @@ module.exports = resumable = function(temporaryFolder){
 
     var fields = req.body;
     var files = req.files;
-    console.log(fields);
+    // console.log(fields);
 
     var chunkNumber = fields['resumableChunkNumber'];
     var chunkSize = fields['resumableChunkSize'];

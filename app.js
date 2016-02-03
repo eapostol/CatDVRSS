@@ -11,6 +11,7 @@ var logger = require('morgan');
 var errorHandler = require('errorhandler');
 var lusca = require('lusca');
 var methodOverride = require('method-override');
+var resParser = require('./libs/response-parser');
 
 var config = require('./catdv_config');
 var resumable = require('./libs/resumable-node.js')(config.temp_uploads);
@@ -69,35 +70,35 @@ app.use(compress());
 app.use(assets({
   paths: ['public/css', 'public/js']
 }));
-// app.use(logger('dev'));
-// app.use(favicon(path.join(__dirname, 'public/favicon.png')));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(expressValidator());
-// app.use(methodOverride());
-// app.use(cookieParser());
-// app.use(session({
-//   resave: true,
-//   saveUninitialized: true,
-//   secret: secrets.sessionSecret,
-//   store: new MongoStore({ url: secrets.db, autoReconnect: true })
-// }));
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(flash());
-// app.use(lusca({
-//   csrf: false,
-//   xframe: 'SAMEORIGIN',
-//   xssProtection: true
-// }));
-// app.use(function(req, res, next) {
-//   res.locals.user = req.user;
-//   next();
-// });
-// app.use(function(req, res, next) {
-//   if (/api/i.test(req.path)) req.session.returnTo = req.path;
-//   next();
-// });
+app.use(logger('dev'));
+app.use(favicon(path.join(__dirname, 'public/favicon.png')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressValidator());
+app.use(methodOverride());
+app.use(cookieParser());
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: secrets.sessionSecret,
+  store: new MongoStore({ url: secrets.db, autoReconnect: true })
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+app.use(lusca({
+  csrf: false,
+  xframe: 'SAMEORIGIN',
+  xssProtection: true
+}));
+app.use(function(req, res, next) {
+  res.locals.user = req.user;
+  next();
+});
+app.use(function(req, res, next) {
+  if (/api/i.test(req.path)) req.session.returnTo = req.path;
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 
@@ -137,6 +138,8 @@ app.use(errorHandler());
 
 // Handle uploads through Resumable.js
 app.post('/upload', multipartMiddleware, function(req, res){
+
+        // res.status(200).send("HELLO world");
   var fs = require('fs');
   var cache = [];
   var reqString  = JSON.stringify(req, function(key, value) {
@@ -152,7 +155,7 @@ app.post('/upload', multipartMiddleware, function(req, res){
   });
   cache = null; // Enable garbage collection
   fs.writeFile("req.txt", reqString );
-    console.log(req); 
+    // console.log(req); 
     var status = null;
 
     resumable.post(req, function(status, filename, original_filename, identifier){
@@ -161,20 +164,17 @@ app.post('/upload', multipartMiddleware, function(req, res){
           var fs = require('fs');
           var outpath = __dirname + '/Uploads/'
           var wstream = fs.createWriteStream( outpath + filename);
+          req.body.summary = resParser.buildSummary(req.body);
           mkdirp(outpath, function(err) { 
             if (err) return false;
+            fs.writeFile(outpath + filename + ".xml", resParser.buildXML(req.body))
             resumable.write(identifier, wstream, {onDone: function() {
               resumable.clean(identifier);
             }});
           });
-
-
         }
 
-        res.send(status, {
-            // NOTE: Uncomment this funciton to enable cross-domain request.
-            //'Access-Control-Allow-Origin': '*'
-        });
+        res.status(200).send("");
     });
 });
 

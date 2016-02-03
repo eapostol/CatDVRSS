@@ -10,15 +10,20 @@ Number.prototype.toUTCString = function () {
     return time;
 }
 $(document).ready(function() {
-
   //set timezone form field
   $("input#time").val( moment().format("hh:mm a") );
   $("input#tz").val((new Date().getTimezoneOffset().toUTCString()));
 
   $("select#source-select").on("change", function(){
     var sourceSelect = $(this);
-    if(sourceSelect.val() == "Satellite Downlink"){
+    $(":submit").show();
+    $(".source-fields").fadeOut(300);
+    if(sourceSelect.val() === "Satellite Downlink"){
       $("#downlink-fields").fadeIn(300);
+    }
+    else if(sourceSelect.val() === "File"){
+      $("#file-upload").fadeIn(300);
+      $(":submit").hide();
     }
     else{
       $("#downlink-fields").fadeOut(300);
@@ -26,28 +31,28 @@ $(document).ready(function() {
   });
 
 
-  $("#dropArea").on( "dragenter", function(event){
-    $("#curtain").addClass("resumable-dragover");
-    console.log("drag enter");
-  } );
-  $("#dropArea").on( "dragend", function(event){
-    $("#curtain").removeClass("resumable-dragover");
-  } );
-  $("#dropArea").on( "dragleave", function(event){
-    $("#curtain").removeClass("resumable-dragover");
-    console.log("drag leave");
-  } );
-  $("#dropArea").on( "drop", function(event){
-    $("#curtain").removeClass("resumable-dragover");
-    console.log("drag dropped");
-    handleDrop(event);
-  } );
+  // $("#dropArea").on( "dragenter", function(event){
+  //   $("#curtain").addClass("resumable-dragover");
+  //   console.log("drag enter");
+  // } );
+  // $("#dropArea").on( "dragend", function(event){
+  //   $("#curtain").removeClass("resumable-dragover");
+  // } );
+  // $("#dropArea").on( "dragleave", function(event){
+  //   $("#curtain").removeClass("resumable-dragover");
+  //   console.log("drag leave");
+  // } );
+  // $("#dropArea").on( "drop", function(event){
+  //   $("#curtain").removeClass("resumable-dragover");
+  //   console.log("drag dropped");
+  //   handleDrop(event);
+  // } );
 
-  /* events fired on the drop targets */
-   $("#dropArea").on("dragover", function( event ) {
-      // prevent default to allow drop
-      event.preventDefault();
-  });
+  // /* events fired on the drop targets */
+  //  $("#dropArea").on("dragover", function( event ) {
+  //     // prevent default to allow drop
+  //     event.preventDefault();
+  // });
 
 });
 
@@ -60,7 +65,7 @@ function dragstart_handler(ev) {
 function handleDrop(e) {
   e.stopPropagation(); // Stops some browsers from redirecting.
   e.preventDefault();
-  console.debug(e);
+  // console.debug(e);
   var dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
   var files = e.target.files || (dt && dt.files);
   for (var i = 0, f; f = files[i]; i++) {

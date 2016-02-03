@@ -7,12 +7,12 @@ block content
   h1 Create RSS item
   p.lead 
 
-    form.col-sm-10.well.form(name="add-item", method="post")
+    form.col-sm-10.well.form#dataForm(name="add-item", method="post")
 
         input(type='hidden', name='_csrf', value=token)
         div.form-group.col-sm-6
             label Catalog *
-            select.form-control(type="select", name="feed")
+            select.form-control(type="select", name="feed", required="")
 
               for feed in feeds
                 option #{feed.display}
@@ -25,13 +25,14 @@ block content
             //- input.form-control(type="text", name="feed")
         div.form-group.col-sm-6
             label Station *
-            input.form-control(type="text", name="station", placeholder="XXXX")
+            input.form-control(type="text", name="station", placeholder="XXXX", required="")
         div.form-group.col-sm-12
             label Title *
-            input.form-control(type="text", name="title")
+            input.form-control(type="text", name="title", required="")
         div.form-group.col-sm-12
             label Description/Script *
-            textarea.form-control(name="description", cols="40", rows="5")
+              small (include leads and tags)
+            textarea.form-control(name="description", cols="40", rows="5", required="")
         div.form-group.col-sm-6
             label Reporter
             input.form-control(type="text", name="reporter")
@@ -45,7 +46,8 @@ block content
               option Hotchannel
               option MasterCat
               option Satellite Downlink
-        div.form-group.col-sm-12.collapse(id="downlink-fields").bg-warning
+              option File
+        div.form-group.col-sm-12.collapse.bg-warning.source-fields#downlink-fields
           div.form-group.col-sm-6
             label Satellite
             input.form-control(type="text", name="satellite", value="")
@@ -100,7 +102,10 @@ block content
               |Link 
               small (optional)
             input.form-control(type="text", name="link", placeholder="http://example.com/video?id=33")
-      div.form-group.col-sm-12.file-upload
+        div.form-group.col-sm-12
+            label Embargo
+            input.form-control(type="text", name="embargo", value="")
+        div.form-group.col-sm-12.source-fields#file-upload
           label File
           div#dropArea
             div#dropZone Drop File Here or
@@ -110,3 +115,9 @@ block content
         div.form-group.col-sm-12
             input.btn.btn-primary(type="submit", value="Submit")
             h2#submitMessage Please leave this window open. Once file is done uploading, the form will submit. 
+
+block footer
+  //- script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+  //- script(src="/js/lib/parsley.js")
+  script(src='/js/resumable.js')
+  script(src='/js/resumeForm.js')

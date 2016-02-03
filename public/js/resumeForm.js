@@ -1,15 +1,19 @@
+
+$(document).ready(function() {
+  $('#dataForm').parsley();
+});
+
 var r = new Resumable({
     target:'/upload',
     chunkSize:1*1024*1024,
     simultaneousUploads:4,
     testChunks:false,
-    throttleProgressCallbacks:1
+    throttleProgressCallbacks:1,
+    query: getFormData()
   });
 // Resumable.js isn't supported, fall back on a different method
-      console.log("here Added");
 if(!r.support) {
   $('.resumable-error').show();
-  console.log("error");
 } else {
   // Show a place for dropping/selecting files
   $('#dropArea').show();
@@ -18,10 +22,15 @@ if(!r.support) {
 
   // // Handle file add event
   r.on('fileAdded', function(file){
+      if(!$('#dataForm').parsley().validate()) return false;;
       console.log("file Added");
+      console.log(file);
       // Show progress pabr
       $('#dropProgress').show();
       // Actually start the upload
+      r.opts.query = getFormData();
+      r.opts.query.filename = file.fileName;
+      console.log(r);
       r.upload();
     });
   // r.on('pause', function(){
@@ -33,8 +42,8 @@ if(!r.support) {
 
     });
   r.on('fileSuccess', function(file,message){
-
-    });
+    // window.location.href = "/";
+  });
   r.on('fileError', function(file, message){
 
     });
@@ -48,6 +57,18 @@ if(!r.support) {
   r.on('uploadStart', function(){
     console.log("upload start");
     $(":submit").prop('disabled', true);
+    $(":submit").hide();
     $("#submitMessage").show();
   });
+}
+
+function getFormData(){
+  console.log("Here comes the data");
+  var paramObj = {};
+  $.each($('#dataForm').serializeArray(), function(_, kv) {
+    paramObj[kv.name] = kv.value;
+  });
+  // return {this: "KGTV"};
+  console.log(paramObj);
+  return paramObj;
 }
