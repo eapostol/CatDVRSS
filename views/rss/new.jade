@@ -100,6 +100,13 @@ block content
               |Link 
               small (optional)
             input.form-control(type="text", name="link", placeholder="http://example.com/video?id=33")
+      div.form-group.col-sm-12.file-upload
+          label File
+          div#dropArea
+            div#dropZone Drop File Here or
+              input.form-control#browseFile(type="file", name="uploadFile")
+          div#dropProgress
         div.form-group.col-sm-12
         div.form-group.col-sm-12
             input.btn.btn-primary(type="submit", value="Submit")
+            h2#submitMessage Please leave this window open. Once file is done uploading, the form will submit. 

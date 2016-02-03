@@ -28,3 +28,4 @@ node_modules
 
 *catdv_config.js
 *.lnk
+Uploads/*
