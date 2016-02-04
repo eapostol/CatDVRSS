@@ -7,6 +7,7 @@ var RSS = require('rss');
 var http = require('http');
 var when = require('when');
 var config = require('../catdv_config');
+var resParser = require('../libs/response-parser');
 var mongoose = require('mongoose');
 var validUrl = require('valid-url');
 
@@ -147,7 +148,7 @@ function generateRSS(feedInfo, res){
 		  var body = '';
 		  res.setEncoding('utf8');
 		  res.on('data', function (res) {
-		  	body += res
+		  	body += res;
 		  });
 		  res.on('end', function(){
 		    var deferreds = [];
@@ -406,7 +407,7 @@ exports.postItem = function(req, res) {
   }
   console.log("Link: " + req.body.link)
 
-  var summary = buildSummary(req.body);
+  var summary = resParser.buildSummary(req.body);
 
   var thisItem = new Item({ 
   	feed: req.body.feed,
@@ -425,29 +426,6 @@ exports.postItem = function(req, res) {
 	  return res.redirect('/rss/');
   });
 };
-
-function buildSummary( body ){
-	var alltext = "<br/>\r\n";
-	alltext += "[Description:] " + body.description + "<br/>\r\n";
-	alltext += "[Source:] " + body.source + "<br/>\r\n";
-	if(body.source == "Satellite Downlink"){
-		alltext += "-[Satellite:] " + body.satellite + "<br/>\r\n";
-		alltext += "-[Channel:] " + body.channel + "<br/>\r\n";
-		alltext += "-[Polarity:] " + body.polarity + "<br/>\r\n";
-		alltext += "-[FEC:] " + body.fec + "<br/>\r\n";
-		alltext += "-[Symbol Rate:] " + body.symbol + "<br/>\r\n";
-		alltext += "-[Data Rate:] " + body.datarate + "<br/>\r\n";
-		alltext += "-[Window Times:] " + body.window + "<br/>\r\n";
-		alltext += "-[Troubleshooting Number:] " + body.troubleNumber + "<br/>\r\n";
-	}
-	alltext += "[Reporter:] " + body.reporter + "<br/>\r\n";
-	alltext += "[Location:] " + body.location + "<br/>\r\n";
-	alltext += "[Time:] " + body.time + "<br/>\r\n";
-	alltext += "[Timezone:] "+ body.tz + "<br/>\r\n";
-	alltext += "[Format:] " + body.format + "<br/>\r\n";
-	alltext += "[TRT:] " + body.trt + "<br/>\r\n";
-	return alltext;
-}
 
 
 exports.deleteItem = function(req, res) {

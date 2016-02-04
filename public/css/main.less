@@ -105,3 +105,67 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .btn-red {
 color: red;
 }
+
+#curtain{
+  position: absolute;
+  background-color: #05f5f5;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+  display: none;
+}
+#curtain.resumable-dragover{
+  display: none;
+  display: block;
+}
+#dropArea{
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+}
+#dropArea.resumable-dragover #dropZone{
+  background-color: #a5a5a5;
+  border: 2px solid #444;
+}
+#dropZone{
+  background-color: #d5d5d5;
+  border: 2px dashed #bbb;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 40px;
+  height: 100%;
+  text-align: center;
+  font: 21pt bold arial;
+  color: #444;
+
+  white-space:nowrap;
+  overflow: hidden;
+}
+
+#dropProgress{
+  background-color: #050505;
+  height: 10px;
+}
+
+#submitMessage{
+  display: none;
+}
+
+#browseFile{
+  background-color: transparent;
+  display: inline;
+  width: 300px;
+}
+
+#file-upload{
+  display: none;
+}
+
+.parsley-error{
+  border: 1px solid red;
+  background-color: #ffcccc;
+}
