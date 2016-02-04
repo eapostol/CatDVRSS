@@ -31,17 +31,16 @@ $(document).ready(function() {
   });
 
 
-  // $("#dropArea").on( "dragenter", function(event){
-  //   $("#curtain").addClass("resumable-dragover");
-  //   console.log("drag enter");
-  // } );
+  $("#dropZone").on( "dragenter", function(event){
+    $("#dropArea").addClass("resumable-dragover");
+    // console.log("drag enter");
+  } );
   // $("#dropArea").on( "dragend", function(event){
-  //   $("#curtain").removeClass("resumable-dragover");
+  //   $("#dropArea").removeClass("resumable-dragover");
   // } );
-  // $("#dropArea").on( "dragleave", function(event){
-  //   $("#curtain").removeClass("resumable-dragover");
-  //   console.log("drag leave");
-  // } );
+  $("#dropZone").on( "dragleave", function(event){
+    $("#dropArea").removeClass("resumable-dragover");
+  } );
   // $("#dropArea").on( "drop", function(event){
   //   $("#curtain").removeClass("resumable-dragover");
   //   console.log("drag dropped");
