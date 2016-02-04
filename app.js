@@ -162,11 +162,12 @@ app.post('/upload', multipartMiddleware, function(req, res){
         console.log('POST', status, original_filename, identifier);
         if(status === "done"){
           var fs = require('fs');
-          var outpath = __dirname + '/Uploads/'
-          var wstream = fs.createWriteStream( outpath + filename);
+          var outpath = config.uploads_dir;
           req.body.summary = resParser.buildSummary(req.body);
+          
           mkdirp(outpath, function(err) { 
             if (err) return false;
+            var wstream = fs.createWriteStream( outpath + filename);
             fs.writeFile(outpath + filename + ".xml", resParser.buildXML(req.body))
             resumable.write(identifier, wstream, {onDone: function() {
               resumable.clean(identifier);
