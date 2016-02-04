@@ -39,6 +39,7 @@ exports.buildXML = function(data){
         USER8: null, // related slugs
         USER9: null, 
         USER10: null, //publish or deliver to
+        NOTES: "bin="+data.feed 
       }
   };
   var outXML = js2xmlparser("CLIPS", outData);
