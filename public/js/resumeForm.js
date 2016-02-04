@@ -42,7 +42,7 @@ if(!r.support) {
 
     });
   r.on('fileSuccess', function(file,message){
-    // window.location.href = "/";
+    window.location.href = "/";
   });
   r.on('fileError', function(file, message){
 
