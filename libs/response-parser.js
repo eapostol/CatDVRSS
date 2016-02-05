@@ -48,5 +48,5 @@ exports.buildXML = function(data){
 }
 
 function cleanScript(description){
-  return description.replace(/\d(\d|\w)\d\d/g, "").replace(/\[<mos>.*\]/g, "").replace(/\[.*?VIZ.*?\]/g, "").replace(/(<br\s*\/*>)+/g, '<br/>');
+  return description.replace(/\d(\d|\w)\d\d/g, "").replace(/\[<mos>.*\]/g, "").replace(/\[.*?VIZ.*?\]/g, "").replace(/(<br\s*\/*>){2,}/g, '<br/><br/>');
 }
