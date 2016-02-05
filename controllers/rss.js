@@ -191,20 +191,25 @@ function generateRSS(feedInfo, res){
 		  	var clipData = JSON.parse(body).data
 		  	// console.log("ID= " )
 		  	if(clipData.userFields !== null && typeof clipData.userFields !== "undefined" ){
-		  		var description = (typeof clipData.userFields.U1 !== "undefined" ?
-		  		 clipData.userFields.U1.replace(/\n/g, "<br/>").replace(/\[pi\](.*?)\[\/pi\]/g, '<b>$1</b>').replace(/\[cc\](.*?)\[\/cc\]/g, '<i>$1</i>').replace(/\[.*?\]/g, '') : "No Script Found");
-				feed.item({
+		  		var description = "" ; // (typeof clipData.userFields.U1 !== "undefined" ?
+		  		 description += "<br/>-Script: " + (clipData.userFields.U1 || "No Script");
+		  		 description += "<br/>-Filename: " + clipData.name;
+		  		 description += "<br/>-Embargo: " + (clipData.userFields.U3 || "None");
+		  		 description += "<br/>-Publish Notes: " + (clipData.userFields.U11 || "");
+		  		 description += "<br/>-Video Notes: " + (clipData.userFields.U4 || "");
+		  		 description = description.replace(/\n/g, "<br/>").replace(/\[pi\](.*?)\[\/pi\]/g, '<b>$1</b>').replace(/\[cc\](.*?)\[\/cc\]/g, '<i>$1</i>').replace(/\[.*?\]/g, ''); // : "No Script Found");
+					feed.item({
 				    title:  clipData.userFields.U5 + " " + (typeof clipData.userFields.U6 !== "undefined" && clipData.userFields.U6 !== "" ? clipData.userFields.U6 : clipData.name),
 				    description: description,
 				    url: 'http://'+catdv_url+':'+catdv_port+'/catdv-web2/clip-details.jsp?id='+clipData.ID, // link to the item
 				    author: clipData.userFields.U5, // optional - defaults to feed author property
 				    date: (typeof clipData.recordedDate !== null ? clipData.recordedDate : Date.now()), // any format that js Date can parse.
 				    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
-				});
-			}
-			else console.log('clip ' + clipData.ID + ": NO USER FIELDS!!! SKIPPED!!")
-			deferred.resolve();
-		  })
+					});
+				}
+				else console.log('clip ' + clipData.ID + ": NO USER FIELDS!!! SKIPPED!!")
+				deferred.resolve();
+		  }); 
 		  res.on('error', function(e) {
 			  console.log('problem with request ' + clipData.ID + ': ' + e.message);
 		  });

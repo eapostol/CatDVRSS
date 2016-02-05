@@ -1,10 +1,9 @@
 extends ../layout
 block links
-  link(rel="alternate", type="application/rss+xml", title="Breaking News", href="/rss/BreakingNews.xml")
 
 block content
   //- img(src="/images/Scripps_Family_Frist_Logo_FINAL.png")
-  h1 Create RSS item
+  h1 The Bridge/New RSS
   p.lead 
 
     form.col-sm-10.well.form#dataForm(name="add-item", method="post")
@@ -27,6 +26,14 @@ block content
             label Station *
             input.form-control(type="text", name="station", placeholder="XXXX", required="")
         div.form-group.col-sm-12
+            label Source
+            select.form-control(type="select", name="source", id="source-select")
+              option TVU Grid
+              option Hotchannel
+              option The Bridge
+              option MasterCat Placeholder
+              option Satellite Downlink
+        div.form-group.col-sm-12
             label Title *
             input.form-control(type="text", name="title", required="")
         div.form-group.col-sm-12
@@ -39,14 +46,6 @@ block content
         div.form-group.col-sm-6
             label Location
             input.form-control(type="text", name="location")
-        div.form-group.col-sm-12
-            label Source
-            select.form-control(type="select", name="source", id="source-select")
-              option TVU Grid
-              option Hotchannel
-              option MasterCat
-              option Satellite Downlink
-              option File
         div.form-group.col-sm-12.collapse.bg-warning.source-fields#downlink-fields
           div.form-group.col-sm-6
             label Satellite

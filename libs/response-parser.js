@@ -3,8 +3,8 @@ var js2xmlparser = require("js2xmlparser");
 
 exports.buildSummary = function( body ){
   var alltext = "<br/>\r\n";
-  alltext += "-Description: " + body.description + "<br/>\r\n";
   alltext += "-Source: " + body.source + "<br/>\r\n";
+  alltext += "-Description: " + cleanScript(body.description) + "<br/>\r\n";
   if(body.source == "Satellite Downlink"){
     alltext += "--Satellite: " + body.satellite + "<br/>\r\n";
     alltext += "--Channel: " + body.channel + "<br/>\r\n";
@@ -45,4 +45,8 @@ exports.buildXML = function(data){
   var outXML = js2xmlparser("CLIPS", outData);
   return outXML;
   console.log(outXML);
+}
+
+function cleanScript(description){
+  return description.replace(/\d(\d|\w)\d\d/g, "");
 }

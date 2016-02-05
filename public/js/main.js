@@ -21,7 +21,7 @@ $(document).ready(function() {
     if(sourceSelect.val() === "Satellite Downlink"){
       $("#downlink-fields").fadeIn(300);
     }
-    else if(sourceSelect.val() === "File"){
+    else if(sourceSelect.val() === "The Bridge"){
       $("#file-upload").fadeIn(300);
       $(":submit").hide();
     }

@@ -55,6 +55,7 @@ if(!r.support) {
   //   $('.resumable-file-progress').html('canceled');
   // });
   r.on('uploadStart', function(){
+    $('#dropZone').hide();
     console.log("upload start");
     $(":submit").prop('disabled', true);
     $(":submit").hide();
