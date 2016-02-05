@@ -192,9 +192,9 @@ function generateRSS(feedInfo, res){
 		  	// console.log("ID= " )
 		  	if(clipData.userFields !== null && typeof clipData.userFields !== "undefined" ){
 		  		var description = "" ; // (typeof clipData.userFields.U1 !== "undefined" ?
-		  		 description += "<br/>-Script: " + (clipData.userFields.U1 || "No Script");
 		  		 description += "<br/>-Filename: " + clipData.name;
 		  		 description += "<br/>-Embargo: " + (clipData.userFields.U3 || "None");
+		  		 description += "<br/>-Script: " + (clipData.userFields.U1 || "No Script");
 		  		 description += "<br/>-Publish Notes: " + (clipData.userFields.U11 || "");
 		  		 description += "<br/>-Video Notes: " + (clipData.userFields.U4 || "");
 		  		 description = description.replace(/\n/g, "<br/>").replace(/\[pi\](.*?)\[\/pi\]/g, '<b>$1</b>').replace(/\[cc\](.*?)\[\/cc\]/g, '<i>$1</i>').replace(/\[.*?\]/g, ''); // : "No Script Found");
