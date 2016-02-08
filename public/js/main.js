@@ -30,6 +30,8 @@ $(document).ready(function() {
     }
   });
 
+  $("select#source-select").val("The Bridge").change();
+
 
   $("#dropZone").on( "dragenter", function(event){
     $("#dropArea").addClass("resumable-dragover");
