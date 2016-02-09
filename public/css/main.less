@@ -122,6 +122,9 @@ color: red;
   display: none;
   display: block;
 }
+#dataForm{
+  background-color: #e5e5e5;
+}
 #dropArea{
   width: 100%;
   height: 150px;
@@ -146,9 +149,35 @@ color: red;
   overflow: hidden;
 }
 
+#dropProgressDiv{
+  display: none;
+  position: relative;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border: 1px solid black;
+  height: 25px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
 #dropProgress{
+  padding: 0;
+  margin: 0;
   background-color: #050505;
-  height: 10px;
+  height: 100%;
+  width: 0%;
+  z-index: 8;
+  /*display: none;*/
+}
+#progressNum{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  color: gray;
+  z-index: 9;
 }
 
 #submitMessage{

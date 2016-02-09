@@ -50,12 +50,14 @@ if(!r.support) {
   r.on('fileProgress', function(file){
       // Handle progress for both the file and the overall upload
       $('#dropProgress').css({width:Math.floor(r.progress()*100) + '%'});
+      $('#progressNum').text(Math.round(r.progress()*100) + '%');
     });
   // r.on('cancel', function(){
   //   $('.resumable-file-progress').html('canceled');
   // });
   r.on('uploadStart', function(){
-    $('#dropZone').hide();
+    $('#dropArea').hide();
+    $('#dropProgressDiv').show();
     console.log("upload start");
     $(":submit").prop('disabled', true);
     $(":submit").hide();
