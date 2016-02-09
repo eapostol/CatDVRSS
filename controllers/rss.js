@@ -8,7 +8,7 @@ var http = require('http');
 var when = require('when');
 var config = require('../catdv_config');
 var resParser = require('../libs/response-parser');
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 var validUrl = require('valid-url');
 
 var feeds = [
@@ -21,17 +21,17 @@ var feeds = [
 
 
 //define the schema
-var feedItemSchema = new mongoose.Schema({
-  feed: { type: String, default: 'Breaking News' },
-  title: String,
-  summary: String,
-  link: String,
-  created_at: Date,
-  expires_at: Date //hours
+// var feedItemSchema = new mongoose.Schema({
+//   feed: { type: String, default: 'Breaking News' },
+//   title: String,
+//   summary: String,
+//   link: String,
+//   created_at: Date,
+//   expires_at: Date //hours
 
-});
+// });
 //define the model based on the schema
-var Item = mongoose.model('Item', feedItemSchema);
+// var Item = mongoose.model('Item', feedItemSchema);
 
 var catdv_url = config.catdv_url;
 var catdv_port = config.catdv_port;
@@ -225,30 +225,30 @@ function generateRSS(feedInfo, res){
 
 	function getAddedItems(name, callback){
 		//console.log(name);
-		Item.find({feed: name})
-		.where('expires_at').gt(Date.now())
-		.exec(function(err, items){
-			if(err) console.error(err);
-			else{
-				for (var i = 0; i < items.length; i++ ){
-					var url = items[i].link;
-				    if (!validUrl.isUri(url)){
-			        url = "http://"+config.this_host+":"+config.this_port+"/rss/" +items[i].id;
-				    }
+		// Item.find({feed: name})
+		// .where('expires_at').gt(Date.now())
+		// .exec(function(err, items){
+		// 	if(err) console.error(err);
+		// 	else{
+		// 		for (var i = 0; i < items.length; i++ ){
+		// 			var url = items[i].link;
+		// 		    if (!validUrl.isUri(url)){
+		// 	        url = "http://"+config.this_host+":"+config.this_port+"/rss/" +items[i].id;
+		// 		    }
 
-					//console.log(items[i].title);
-					feed.item({
-					    title:  items[i].title,
-					    description:  items[i].summary,
-					    url:  url, //(typeof items[i].link !== "undefined" ? items[i].link : "/"), // link to the item
-					    author: "Self",
-					    date: items[i].created_at, // any format that js Date can parse.
-					    guid: (typeof items[i].guid !== "undefined" ? items[i].guid : items[i].created_at.toFormat("YYMMDDHHMISSPP"))
-					});
-				}
-			}
+		// 			//console.log(items[i].title);
+		// 			feed.item({
+		// 			    title:  items[i].title,
+		// 			    description:  items[i].summary,
+		// 			    url:  url, //(typeof items[i].link !== "undefined" ? items[i].link : "/"), // link to the item
+		// 			    author: "Self",
+		// 			    date: items[i].created_at, // any format that js Date can parse.
+		// 			    guid: (typeof items[i].guid !== "undefined" ? items[i].guid : items[i].created_at.toFormat("YYMMDDHHMISSPP"))
+		// 			});
+		// 		}
+		// 	}
 			callback();
-		});
+		// });
 	}
 	/* create an rss feed */
 	var feed = new RSS({
@@ -366,14 +366,14 @@ exports.getItem  = function(req, res) {
 };
 
 exports.index = function(req, res) {
-	Item.find({}).sort({"created_at": "descending"}).exec(
-		function(err, items){
-		if(err) return console.error(err);
+	// Item.find({}).sort({"created_at": "descending"}).exec(
+	// 	function(err, items){
+	// 	if(err) return console.error(err);
 		//console.log(items);
 		res.render('rss/index', {
-		    title: 'RSS', items: items, feeds: feeds
+		    title: 'RSS', items: {}, feeds: feeds
 		});
-	});
+	// });
 	
 };
 
