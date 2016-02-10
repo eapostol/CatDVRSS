@@ -12,11 +12,11 @@ var mongoose = require('mongoose');
 var validUrl = require('valid-url');
 
 var feeds = [
-	{title: "BreakingNews", catID: 1727, display: "Breaking News" },
-	{title: "Shared", catID: 4102, display: "Shared" },
-	{title: "Enterprise", catID: 4130, display: "Enterprise" },
-	{title: "TheNow", catID: 3802, display: "The Now" },
-	{title: "DCBureau", catID: 5652, display: "DC Bureau" }
+	{title: "BreakingNews", catID: 1727, display: "Breaking News", newer: 86400 },
+	{title: "Shared", catID: 4102, display: "Shared", newer: 86400 * 3 },
+	{title: "Enterprise", catID: 4130, display: "Enterprise", newer: 86400 * 7 },
+	{title: "TheNow", catID: 3802, display: "The Now", newer: 86400 * 3 },
+	{title: "DCBureau", catID: 5652, display: "DC Bureau", newer: 86400 * 7 }
 ]
 
 
@@ -141,9 +141,11 @@ function generateRSS(feedInfo, res){
 		var options = {
 		  host: catdv_url,
 		  port: catdv_port,
-		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSrc.importDate)newer(172800))', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', // 
+		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSrc.importDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', // 
 		  method: 'GET'
 		};
+		console.log(options.path);
+
 		var request = http.request(options, function(res) {
 		  var body = '';
 		  res.setEncoding('utf8');
@@ -154,7 +156,8 @@ function generateRSS(feedInfo, res){
 		    var deferreds = [];
 		  	var clipsData = JSON.parse(body).data.items
 		  	for (index in clipsData) {
-		  		deferreds.push(getClip(clipsData[index].ID));
+		  		injectItem(feed, clipsData[index]);
+		  		// deferreds.push(getClip(clipsData[index].ID));
 			}
 
 			when.all(deferreds).then(function () {
@@ -180,6 +183,8 @@ function generateRSS(feedInfo, res){
 		  path: '/api/4/clips/'+clipID+';jsessionid='+jsessionid,
 		  method: 'GET'
 		};
+		console.log(options.path);
+		
 
 		var request = http.request(options, function(res) {
 		  var body = '';
@@ -188,27 +193,13 @@ function generateRSS(feedInfo, res){
 		  	body += res
 		  });
 		  res.on('end', function(){
-		  	var clipData = JSON.parse(body).data
-		  	// console.log("ID= " )
-		  	if(clipData.userFields !== null && typeof clipData.userFields !== "undefined" ){
-		  		var description = "" ; // (typeof clipData.userFields.U1 !== "undefined" ?
-		  		 description += "<br/>-Filename: " + clipData.name;
-		  		 description += "<br/>-Embargo: " + (clipData.userFields.U3 || "None");
-		  		 description += "<br/>-Script: " + (clipData.userFields.U1 || "No Script");
-		  		 description += "<br/>-Publish Notes: " + (clipData.userFields.U11 || "");
-		  		 description += "<br/>-Video Notes: " + (clipData.userFields.U4 || "");
-		  		 description = description.replace(/\n/g, "<br/>").replace(/\[pi\](.*?)\[\/pi\]/g, '<b>$1</b>').replace(/\[cc\](.*?)\[\/cc\]/g, '<i>$1</i>').replace(/\[.*?\]/g, ''); // : "No Script Found");
-					feed.item({
-				    title:  clipData.userFields.U5 + " " + (typeof clipData.userFields.U6 !== "undefined" && clipData.userFields.U6 !== "" ? clipData.userFields.U6 : clipData.name),
-				    description: description,
-				    url: 'http://'+catdv_url+':'+catdv_port+'/catdv-web2/clip-details.jsp?id='+clipData.ID, // link to the item
-				    author: clipData.userFields.U5, // optional - defaults to feed author property
-				    date: (typeof clipData.recordedDate !== null ? clipData.recordedDate : Date.now()), // any format that js Date can parse.
-				    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
-					});
-				}
-				else console.log('clip ' + clipData.ID + ": NO USER FIELDS!!! SKIPPED!!")
-				deferred.resolve();
+		  	//========================
+
+
+
+
+		  	// injectItem(feed, JSON.parse(body).data);
+			deferred.resolve();
 		  }); 
 		  res.on('error', function(e) {
 			  console.log('problem with request ' + clipData.ID + ': ' + e.message);
@@ -293,6 +284,30 @@ function generateRSS(feedInfo, res){
 	});*/
 
 	// cache the xml to send to clients
+}
+
+function injectItem( feed, clipData){
+  	// console.log("ID= " )
+  	if(clipData.userFields !== null && typeof clipData.userFields !== "undefined" ){
+  		var description = "" ; // (typeof clipData.userFields.U1 !== "undefined" ?
+		description += "<br/>-Filename: " + clipData.name;
+		description += "<br/>-Embargo: " + (clipData.userFields.U3 || "None");
+		description += "<br/>-Script: " + (clipData.userFields.U1 || "No Script");
+		description += "<br/>-Publish Notes: " + (clipData.userFields.U11 || "");
+		description += "<br/>-Video Notes: " + (clipData.userFields.U4 || "");
+		description = description.replace(/\n/g, "<br/>").replace(/\[pi\](.*?)\[\/pi\]/g, '<b>$1</b>').replace(/\[cc\](.*?)\[\/cc\]/g, '<i>$1</i>').replace(/\[.*?\]/g, ''); // : "No Script Found");
+
+		feed.item({
+	    title:  clipData.userFields.U5 + " " + (typeof clipData.userFields.U6 !== "undefined" && clipData.userFields.U6 !== "" ? clipData.userFields.U6 : clipData.name),
+	    description: description,
+	    url: 'http://'+catdv_url+':'+catdv_port+'/catdv-web2/clip-details.jsp?id='+clipData.ID, // link to the item
+	    author: clipData.userFields.U5, // optional - defaults to feed author property
+	    date: (typeof clipData.recordedDate !== null ? clipData.recordedDate : Date.now()), // any format that js Date can parse.
+	    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
+		});
+	}
+	else console.log('clip ' + clipData.ID + ": NO USER FIELDS!!! SKIPPED!!")
+
 }
 
 function findFeedByName(name){
