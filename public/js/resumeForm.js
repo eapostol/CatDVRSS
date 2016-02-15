@@ -20,12 +20,28 @@ if(!r.support) {
   r.assignDrop($('#dropArea'));
   r.assignBrowse($('#browseFile'));
 
+  $("#dropZone").on( "dragenter", function(event){
+    $("#dropArea").addClass("resumable-dragover");
+    // console.log("drag enter");
+  } );
+  // $("#dropArea").on( "dragend", function(event){
+  //   $("#dropArea").removeClass("resumable-dragover");
+  // } );
+  $("#dropZone").on( "dragleave", function(event){
+    $("#dropArea").removeClass("resumable-dragover");
+  } );
+
   // // Handle file add event
   r.on('fileAdded', function(file){
-      if(!$('#dataForm').parsley().validate()) return false;;
-      console.log("file Added");
-      console.log(file);
-      // Show progress pabr
+      if(!$('#dataForm').parsley().validate()){
+        r.cancel();
+        $("#dropZone").trigger("dragleave");
+        return false;
+      } 
+      // console.log("file Added");
+      // console.log(file);
+
+      // Show progress bar
       $('#dropProgress').show();
       // Actually start the upload
       r.opts.query = getFormData();
@@ -63,6 +79,7 @@ if(!r.support) {
     $(":submit").hide();
     $("#submitMessage").show();
   });
+
 }
 
 function getFormData(){
