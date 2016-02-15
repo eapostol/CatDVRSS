@@ -144,7 +144,7 @@ function generateRSS(feedInfo, res){
 		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSrc.importDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', // 
 		  method: 'GET'
 		};
-		console.log(options.path);
+		// console.log(options.path);
 
 		var request = http.request(options, function(res) {
 		  var body = '';
@@ -354,7 +354,7 @@ exports.getItem  = function(req, res) {
 		    title: 'RSS', item: item,
 		});
 	});
-	console.log(req.params.id)
+	// console.log(req.params.id)
 	// console.log(findFeedByName(req.query.rss))
 	// var feed = findFeedByName(req.query.rss)
 	// getPubKey( function( key )
@@ -428,7 +428,7 @@ exports.postItem = function(req, res) {
     req.flash('errors', errors);
     return res.redirect('/rss/newItem');
   }
-  console.log("Link: " + req.body.link)
+  // console.log("Link: " + req.body.link)
 
   var summary = resParser.buildSummary(req.body);
 
@@ -454,7 +454,7 @@ exports.postItem = function(req, res) {
 exports.deleteItem = function(req, res) {
   req.assert('id', 'ID cannot be blank').notEmpty();
   Item.find({ _id:req.body.id }).remove(function(err){
-  	console.log("Delete: " + req.body.id)
+  	// console.log("Delete: " + req.body.id)
   	res.redirect('/rss');
   })
 
