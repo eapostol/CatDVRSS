@@ -295,6 +295,7 @@ function injectItem( feed, clipData){
 		description += "<br/>-Script: " + (clipData.userFields.U1 || "No Script");
 		description += "<br/>-Publish Notes: " + (clipData.userFields.U11 || "");
 		description += "<br/>-Video Notes: " + (clipData.userFields.U4 || "");
+		description += "<br/>-Modified Date: " + (clipData.modifiedDate || "");
 		description = description.replace(/\n/g, "<br/>").replace(/\[pi\](.*?)\[\/pi\]/g, '<b>$1</b>').replace(/\[cc\](.*?)\[\/cc\]/g, '<i>$1</i>').replace(/\[.*?\]/g, ''); // : "No Script Found");
 
 		feed.item({
@@ -302,7 +303,7 @@ function injectItem( feed, clipData){
 	    description: description,
 	    url: 'http://'+catdv_url+':'+catdv_port+'/catdv-web2/clip-details.jsp?id='+clipData.ID, // link to the item
 	    author: clipData.userFields.U5, // optional - defaults to feed author property
-	    date: (typeof clipData.recordedDate !== null ? clipData.recordedDate : Date.now()), // any format that js Date can parse.
+	    date: (typeof clipData.modifiedDate !== null ? clipData.modifiedDate : Date.now()), // any format that js Date can parse.
 	    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
 		});
 	}
@@ -457,5 +458,13 @@ exports.deleteItem = function(req, res) {
   	// console.log("Delete: " + req.body.id)
   	res.redirect('/rss');
   })
+
+}
+
+exports.metrics = function(req, res) {
+  // req.assert('id', 'ID cannot be blank').notEmpty();
+	res.render('metrics', {
+	    title: 'Metrics'
+	});
 
 }

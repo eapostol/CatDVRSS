@@ -1,4 +1,5 @@
-.navbar.navbar-default.navbar-fixed-top
+.navbar.navbar-default
+  //- .navbar-fixed-top
   .container
     .navbar-header
       button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
@@ -10,19 +11,21 @@
         //- i.fa.fa-cube
         h1
           img(src="/images/Scripps_Family_Frist_Logo_FINAL.png")
-          |RSS
+          //- |RSS
         //- img(src="/images/SFF_LOGO_only.PNG", style="height:100%; display: inline")
         //- |  E.W. Scripps CatDV
     .collapse.navbar-collapse
-      ul.nav.navbar-nav.hidden
-        li(class=title=='Home'?'active':undefined)
-          a(href='/') Home
+      ul.nav.navbar-nav
+        //- li(class=title=='Home'?'active':undefined)
+        //-   a(href='/') Home
         li(class=title=='RSS'?'active':undefined)
           a(href='/rss') RSS
-        li(class=title=='API Examples'?'active':undefined)
-          //a(href='/api') API Examples
-        li(class=title=='Contact'?'active':undefined)
-          //a(href='/contact') Contact
+        li(class=title=='Metrics'?'active':undefined)
+          a(href='/metrics') Metrics
+        //- li(class=title=='API Examples'?'active':undefined)
+        //-   //a(href='/api') API Examples
+        //- li(class=title=='Contact'?'active':undefined)
+        //-   //a(href='/contact') Contact
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=title=='Login'?'active':undefined)

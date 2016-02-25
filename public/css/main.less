@@ -13,7 +13,7 @@ html {
 }
 
 body {
-  padding-top: 110px;
+  /*padding-top: 110px;*/
   margin-bottom: 75px;
 }
 
@@ -60,11 +60,19 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .navbar-nav > li > a {
-    padding-top:40px !important; 
-    padding-bottom:40px !important;
-    height: 100px;
+  margin: 1px;
+    /*padding-top:40px !important; 
+    padding-bottom:40px !important;*/
+    /*height: 100px;*/
 }
 .navbar {min-height:100px !important;}
+
+.nav li.active a {
+  margin: 0px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
 
 // Alerts
 // -------------------------
@@ -203,6 +211,13 @@ color: red;
   float: right;
 }
 
-li:nth-child(odd){
+.list-unstyled li:nth-child(odd){
   background-color: #ddd;
+}
+
+
+// Metrics
+// -------------------------
+.metrics{
+
 }

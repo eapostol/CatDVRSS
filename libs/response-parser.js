@@ -48,5 +48,12 @@ exports.buildXML = function(data){
 }
 
 function cleanScript(description){
-  return description.replace(/\d(\d|\w)\d\d/g, "").replace(/\[<mos>.*\]/g, "").replace(/\[.*?VIZ.*?\]/g, "").replace(/(<br\s*\/*>){2,}/g, '<br/><br/>');
+  var output = description
+    .replace(/’/g, "'")   //bad appostrophe
+    .replace(/…/g, "...")   //ellispses
+    .replace(/\d(\d|\w)\d\d/g, "")   //inews id
+    .replace(/\[<mos>.*\]/g, "")  // Mos elements
+    .replace(/\[.*?VIZ.*?\]/g, "")  //viz RT elements
+    .replace(/(<br\s*\/*>){2,}/g, '<br/><br/>'); //excessive line breaks
+  return output
 }

@@ -121,7 +121,8 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
  * Custom routes
  */
 app.get('/', rssController.index);
-app.get('/upload_form', uploadController.upload);
+app.get('/metrics', rssController.metrics);
+// app.get('/upload_form', uploadController.upload);
 app.get('/rss/', rssController.index); // list of available rss feeds
 app.get('/rss/feed', rssController.getRSS);
 app.get('/rss/newItem', rssController.createItem);
