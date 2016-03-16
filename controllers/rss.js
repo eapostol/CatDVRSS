@@ -48,8 +48,9 @@ var stations = [
 	{name: "WXYZ" },
 	{name: "TheList" },
 	{name: "Newsy" },
-	{name: "Dont Waste Your Money" },
-	{name: "Politifact" },
+	{name: "DWYM" },
+	{name: "PolitiFact" },
+	{name: "DC Bureau" },
 	{name: "Scripps" },
 ]
 
