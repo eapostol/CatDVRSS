@@ -12,13 +12,46 @@ var mongoose = require('mongoose');
 var validUrl = require('valid-url');
 
 var feeds = [
-	{title: "BreakingNews", catID: 1727, display: "Breaking News", newer: 86400 },
 	{title: "Shared", catID: 4102, display: "Shared", newer: 86400 * 2 },
+	{title: "BreakingNews", catID: 1727, display: "Breaking News", newer: 86400 },
 	{title: "Enterprise", catID: 4130, display: "Enterprise", newer: 86400 * 2 },
 	{title: "TheNow", catID: 3802, display: "The Now", newer: 86400 * 2 },
 	{title: "DCBureau", catID: 5652, display: "DC Bureau", newer: 86400 * 2 }
 ]
 
+var stations = [
+	{name: "" },
+	{name: "TheNow" },
+	{name: "KERO" },
+	{name: "KGTV" },
+	{name: "KGUN" },
+	{name: "KIVI" },
+	{name: "KJRH" },
+	{name: "KMGH" },
+	{name: "KMTV" },
+	{name: "KNXV" },
+	{name: "KSAW" },
+	{name: "KSHB" },
+	{name: "KTNV" },
+	{name: "WCPO" },
+	{name: "WEWS" },
+	{name: "WFTS" },
+	{name: "WFTX" },
+	{name: "WGBA" },
+	{name: "WKBW" },
+	{name: "WMAR" },
+	{name: "WPTV" },
+	{name: "WRTV" },
+	{name: "WSYM" },
+	{name: "WTMJ" },
+	{name: "WTVF" },
+	{name: "WXYZ" },
+	{name: "TheList" },
+	{name: "Newsy" },
+	{name: "Dont Waste Your Money" },
+	{name: "Politifact" },
+	{name: "Scripps" },
+]
 
 //define the schema
 var feedItemSchema = new mongoose.Schema({
@@ -399,7 +432,7 @@ exports.createItem = function(req, res) {
 	res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 	res.setHeader("Expires", "0"); // Proxies.
   res.render('rss/new', {
-    title: 'RSS - New Item', feeds: feeds
+    title: 'RSS - New Item', feeds: feeds, stations: stations
   });
 	
 };

@@ -24,7 +24,14 @@ block content
             //- input.form-control(type="text", name="feed")
         div.form-group.col-sm-6
             label Station *
-            input.form-control(type="text", name="station", placeholder="", required="")
+
+            select.form-control(type="select", name="station", required="")
+
+              for station in stations
+                option #{station.name}
+              else
+                option no stations found. 
+            //- input.form-control(type="text", name="station", placeholder="", required="")
         div.form-group.col-sm-12
             label Source
             select.form-control(type="select", name="source", id="source-select")
