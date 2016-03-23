@@ -37,6 +37,7 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var metricsController = require('./controllers/metrics');
 var rssController = require('./controllers/rss');
 var uploadController = require('./controllers/upload');
 
@@ -121,7 +122,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
  * Custom routes
  */
 app.get('/', rssController.index);
-app.get('/metrics', rssController.metrics);
+// app.get('/metrics', rssController.metrics);
 // app.get('/upload_form', uploadController.upload);
 app.get('/rss/', rssController.index); // list of available rss feeds
 app.get('/rss/feed', rssController.getRSS);
@@ -130,6 +131,7 @@ app.post('/rss/newItem', rssController.postItem);
 app.post('/rss/delete', rssController.deleteItem);
 app.get('/rss/:id', rssController.getItem);
 
+app.get('/metrics', metricsController.metrics);
 
 /**
  * Error Handler.

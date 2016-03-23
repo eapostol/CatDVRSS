@@ -1,5 +1,5 @@
 // Set this variable to the path within the web site where this file lives
-var $catdv_SCRIPT_FILE_PATH = "video-sharing/js/catdv-api.js";
+var $catdv_SCRIPT_FILE_PATH = "/js/lib/catdv-api.js";
 
 var catdv_login_handler = null;
 
