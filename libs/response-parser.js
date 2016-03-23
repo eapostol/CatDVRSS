@@ -51,6 +51,11 @@ function cleanScript(description){
   var output = description
     .replace(/’/g, "'")   //bad appostrophe
     .replace(/…/g, "...")   //ellispses
+    .replace(/•/g, "   *")   //Bullet
+    .replace(/–/g, "-")   //long dash
+    .replace(/¤W?[A-Z0-9]{1,2}/ig, "")   //Gromet
+    .replace(/\]\](.*?)\[\[/g, "")   //double square inverted brackets
+         
     .replace(/\d(\d|\w)\d\d/g, "")   //inews id
     .replace(/\[<mos>.*\]/g, "")  // Mos elements
     .replace(/\[.*?VIZ.*?\]/g, "")  //viz RT elements
