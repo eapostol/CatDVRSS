@@ -10,15 +10,9 @@ var config = require('../catdv_config');
 var resParser = require('../libs/response-parser');
 var mongoose = require('mongoose');
 var validUrl = require('valid-url');
-var stations = require('../config/stations.js');
+var stations = require('../config/stations');
+var feeds = require('../config/feeds');
 
-var feeds = [
-	{title: "Shared", catID: 4102, display: "Shared", newer: 86400 * 2 },
-	{title: "BreakingNews", catID: 1727, display: "Breaking News", newer: 86400 },
-	{title: "Enterprise", catID: 4130, display: "Enterprise", newer: 86400 * 2 },
-	{title: "TheNow", catID: 3802, display: "The Now", newer: 86400 * 2 },
-	{title: "DCBureau", catID: 5652, display: "DC Bureau", newer: 86400 * 2 }
-]
 
 //define the schema
 var feedItemSchema = new mongoose.Schema({
