@@ -1,6 +1,5 @@
 
 module.exports = [
-  {name: "" },
   {name: "TheNow" },
   {name: "KERO" },
   {name: "KGTV" },

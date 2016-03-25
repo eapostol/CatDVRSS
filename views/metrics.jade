@@ -1,17 +1,34 @@
 extends layout
 
 block links
-  script(src="http://code.jquery.com/jquery-2.2.2.js"   integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="   crossorigin="anonymous")
   link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css")
-  script(src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js")
+  //- script(src="http://code.jquery.com/jquery-2.2.2.js"   integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="   crossorigin="anonymous")
+block footer
+  script(src="https://www.gstatic.com/charts/loader.js")
+  script(src="//code.jquery.com/ui/1.11.4/jquery-ui.js")
   script(src='/js/lib/jquery.cookie.js')
+  script(src='/js/lib/jquery.tablesorter.min.js')
   script(src='/js/lib/RestApi.js')
   script(src='/js/lib/myUtil.js')
   script(src='/js/lib/rsa.js')
+  //- script(src='/js/dateSlider.js')
   script(src='/js/metrics.js')
 
+
 block content
-  form.form.form-horizontal(role='form')
+  #sidebar
+    #time-range
+        p
+          | Time Range: 
+        p
+          span.slider-time-start
+        p
+          span.slider-time-end
+        .sliders_step1
+          #slider-range
+        p
+          button#filter Filter
+  form.form.form-horizontal.hidden(role='form')
     .form-group
       label.col-sm-2.control-label(for='txtUsername') Username
       .col-sm-10
@@ -28,85 +45,123 @@ block content
       .col-sm-offset-2.col-sm-10
         button#btnSignIn.btn.btn-primary(type='button') Sign in
   div.metrics
-    div.panel.panel-info#most-downloaded 
+    div.panel.panel-info#catalogs 
       div.panel-heading
-        a(data-toggle="collapse", data-target="#most-downloaded>.accordian", href="#most-downloaded") Stations Most Downloaded
+        a(data-toggle="collapse", data-target="#catalogs>.accordian", href="#catalogs") Catalogs
       div.accordian.collapse
-        div.panel-body
-          div.weekly.panel.panel-info
-            div.panel-heading Weekly
-            div.panel-body
-          div.monthly.panel.panel-info
-            div.panel-heading Monthly
-            div.panel-body
-    div.panel.panel-info#top-5-downloaded 
+        div.panel-body 
+          table.table.table-striped#categories-table
+            thead
+              tr
+                th Category
+                th Clips Download count
+                th Clips Uploaded
+            tbody
+              for feed in feeds
+                tr.category(id='#{feed.title}:#{feed.catID}')
+                  td #{feed.display}
+                  td.dlcount
+                  td.ulcount
+              else
+                div no feeds found.
+    div.panel.panel-info#stations 
       div.panel-heading
-        a(data-toggle="collapse", data-target="#top-5-downloaded>.accordian", href="#top-5-downloaded") Top 5 downloaded
+        a(data-toggle="collapse", data-target="#stations>.accordian", href="#stations") Stations
       div.accordian.collapse
-        div.panel-body
-    div.panel.panel-info#total-downloaded-by-station 
+        div.panel-body 
+          table.table.table-striped#stations-table
+            thead
+              tr
+                th Station
+                th Clips Downloaded
+                th Clips Uploaded
+                th Download Count of uploaded clips
+                th Downloads per upload
+                th Uploads Never Downloaded
+            tbody
+              for station in stations
+                tr.station(id='#{station.name}')
+                  td #{station.name}
+                  td.dlcount
+                  td.ulcount
+                  td.dl-owned-count
+                  td.ratio
+                  td.non-dl-count
+              else
+                div no feeds found.
+    div.panel.panel-info#clips
       div.panel-heading
-        a(data-toggle="collapse", data-target="#total-downloaded-by-station>.accordian", href="#total-downloaded-by-station ") Download Totals
+        a(data-toggle="collapse", data-target="#clips>.accordian", href="#clips") All Clips
       div.accordian.collapse
-        div.panel-body
-          div.monthly.panel.panel-info
-            div.panel-heading Monthly
-            div.panel-body
-    div.panel.panel-info#upload-count-by-catalog 
-      div.panel-heading
-        a(data-toggle="collapse", data-target="#upload-count-by-catalog>.accordian", href="#upload-count-by-catalog") Upload Count by Catalog
-      div.accordian.collapse
-        div.panel-body
-          div.weekly.panel.panel-info
-            div.panel-heading Weekly
-            div.panel-body
-    div.panel.panel-info#download-count-by-catalog 
-      div.panel-heading
-        a(data-toggle="collapse", data-target="#download-count-by-catalog>.accordian", href="#download-count-by-catalog") Download Count by Catalog
-      div.accordian.collapse
-        div.panel-body
-          div.weekly.panel.panel-info
-            div.panel-heading Weekly
-            div.panel-body
-    div.panel.panel-info#politifact 
-      div.panel-heading
-        a(data-toggle="collapse", data-target="#politifact>.accordian", href="#politifact") Politifact
-      div.accordian.collapse
-        div.panel-body
-    div.panel.panel-info#market-specific 
-      div.panel-heading
-        a(data-toggle="collapse", data-target="#market-specific>.accordian", href="#market-specific") Market Specific
-      div.accordian.collapse
-        div.panel-body
-    div.panel.panel-info#time-of-day-traffic 
-      div.panel-heading
-        a(data-toggle="collapse", data-target="#time-of-day-traffic>.accordian", href="#time-of-day-traffic ") Time of Day Traffic
-      div.accordian.collapse
-        div.panel-body
-    div.panel.panel-info#reporter-stats.hidden 
-      div.panel-heading
-        a(data-toggle="collapse", data-target="#reporter-stats>.accordian", href="#reporter-stats") Reporter Stats
-      div.accordian.collapse
-        div.panel-body
-  div#categories
-    h2 Categories
-    for feed in feeds
-      div.category(id='#{feed.title}:#{feed.catID}')
-        |#{feed.display}
-        div.count.pull-right
-    else
-      div no feeds found.
-
-  div#stations
-    h2 Stations
-    ul.list-group.list-striped
-      for station in stations
-        li.list-group-item.station(id='#{station.name}')
-          |#{station.name}
-          div.count.pull-right
-      else
-        div no feeds found.
-  ul#clip-list
+        div.panel-body 
+          table.table.table-striped#clip-list
+            thead
+              tr
+                th Name
+                th Download Count
+            tbody
+    //- div.panel.panel-info#most-downloaded 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#most-downloaded>.accordian", href="#most-downloaded") Stations Most Downloaded
+    //-   div.accordian.collapse
+    //-     div.panel-body
+    //-       div.weekly.panel.panel-info
+    //-         div.panel-heading Weekly
+    //-         div.panel-body
+    //-       div.monthly.panel.panel-info
+    //-         div.panel-heading Monthly
+    //-         div.panel-body
+    //- div.panel.panel-info#top-5-downloaded 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#top-5-downloaded>.accordian", href="#top-5-downloaded") Top 5 downloaded
+    //-   div.accordian.collapse
+    //-     div.panel-body
+    //- div.panel.panel-info#total-downloaded-by-station 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#total-downloaded-by-station>.accordian", href="#total-downloaded-by-station ") Download Totals
+    //-   div.accordian.collapse
+    //-     div.panel-body
+    //-       div.monthly.panel.panel-info
+    //-         div.panel-heading Monthly
+    //-         div.panel-body
+    //- div.panel.panel-info#upload-count-by-catalog 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#upload-count-by-catalog>.accordian", href="#upload-count-by-catalog") Upload Count by Catalog
+    //-   div.accordian.collapse
+    //-     div.panel-body
+    //-       div.weekly.panel.panel-info
+    //-         div.panel-heading Weekly
+    //-         div.panel-body
+    //- div.panel.panel-info#download-count-by-catalog 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#download-count-by-catalog>.accordian", href="#download-count-by-catalog") Download Count by Catalog
+    //-   div.accordian.collapse
+    //-     div.panel-body
+    //-       div.weekly.panel.panel-info
+    //-         div.panel-heading Weekly
+    //-         div.panel-body
+    //- div.panel.panel-info#politifact 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#politifact>.accordian", href="#politifact") Politifact
+    //-   div.accordian.collapse
+    //-     div.panel-body
+    //- div.panel.panel-info#market-specific 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#market-specific>.accordian", href="#market-specific") Market Specific
+    //-   div.accordian.collapse
+    //-     div.panel-body
+    //- div.panel.panel-info#time-of-day-traffic 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#time-of-day-traffic>.accordian", href="#time-of-day-traffic ") Time of Day Traffic
+    //-   div.accordian.collapse
+    //-     div.panel-body
+    //- div.panel.panel-info#reporter-stats.hidden 
+    //-   div.panel-heading
+    //-     a(data-toggle="collapse", data-target="#reporter-stats>.accordian", href="#reporter-stats") Reporter Stats
+    //-   div.accordian.collapse
+    //-     div.panel-body
+  div
+    #curve_chart
 
 //- TRACKING:
 //- STATIONS WITH MOST DOWNLOADED CONTENT EACH WEEK/MONTH – Fairly straight forward. But we’ll need to change the station field of the bridge to a dropdown with options. This will avoid variations (e.g. thenow vs “The Now”)
