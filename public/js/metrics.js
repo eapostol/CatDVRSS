@@ -22,6 +22,7 @@ $( document ).ready(function() {
 
     $catdv = catdv.RestApi;
     CATDV_API_URL = $("input[name='api_url']").val();
+    CATDV_CLIENT_URL = $("input[name='mastercat_url']").val();
 
     $("#categories-table").tablesorter();
     $("#stations-table").tablesorter();
@@ -246,11 +247,11 @@ function addLine(sourceName, destName){
 
 function populateDataList(clips){
   var sortedCLips = clips.sort(function(a, b) {
-    return (Object.byString(b, "userFields.U12") ) - (Object.byString(a, "userFields.U12") );
+    return (Object.byString(b, "downloadedBy").length ) - (Object.byString(a, "downloadedBy").length );
   })
   $("#clip-list").find("tr:gt(0)").remove();
   for(var i = 0 ; i < clips.length; i++){
-    $("#clip-list tbody").append("<tr><td>"+clips[i].name+"</td><td>"+(Object.byString(clips[i], "userFields.U12") || 0)+"</td></tr>");
+    $("#clip-list tbody").append("<tr><td><a href='"+CATDV_CLIENT_URL+"clip-details.jsp?id="+clips[i].ID+"' target='_blank'>"+clips[i].name+"</a></td><td>"+(Object.byString(clips[i], "downloadedBy").length || 0)+"</td></tr>");
   }
 }
 
@@ -319,6 +320,7 @@ function calcUniqueDLArray(clips){
         destinations.push(destStr);
       }
     }
+    clips[i].downloadedBy = clips[i].downloadedBy.unique();
   }
   destinations = destinations.unique();
 }
@@ -347,8 +349,8 @@ function calculateNonDownloadsForStations(clips){
 function countTotalDownloads(clips){
   var sum = 0;
   for(var i = 0 ; i < clips.length; i++){
-    if(Object.byString(clips[i], "userFields.U12")){
-      var num = parseInt(Object.byString(clips[i], "userFields.U12").toString()) || 0;
+    if(Object.byString(clips[i], "downloadedBy")){
+      var num = parseInt(Object.byString(clips[i], "downloadedBy").length.toString()) || 0;
       sum += num;
     }
   }
