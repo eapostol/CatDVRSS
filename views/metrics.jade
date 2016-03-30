@@ -2,18 +2,20 @@ extends layout
 
 block links
   link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css")
+  link(rel='stylesheet', href='/css/vendor/bootstrap-multiselect.css', type='text/css')
   //- script(src="http://code.jquery.com/jquery-2.2.2.js"   integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="   crossorigin="anonymous")
 block footer
   script(src="https://www.gstatic.com/charts/loader.js")
   script(src="//code.jquery.com/ui/1.11.4/jquery-ui.js")
   script(src='/js/lib/jquery.cookie.js')
   script(src='/js/lib/jquery.tablesorter.min.js')
+  script(src='/js/lib/jsPlumb-2.0.7-min.js')
+  script(src='/js/lib/bootstrap-multiselect.js')
   script(src='/js/lib/RestApi.js')
   script(src='/js/lib/myUtil.js')
   script(src='/js/lib/rsa.js')
   //- script(src='/js/dateSlider.js')
   script(src='/js/metrics.js')
-
 
 block content
   #sidebar
@@ -44,11 +46,11 @@ block content
     .form-group
       .col-sm-offset-2.col-sm-10
         button#btnSignIn.btn.btn-primary(type='button') Sign in
-  div.metrics
+  div.metrics(style="display:none;")
     div.panel.panel-info#catalogs 
       div.panel-heading
         a(data-toggle="collapse", data-target="#catalogs>.accordian", href="#catalogs") Catalogs
-      div.accordian.collapse
+      div.accordian.collapse.in
         div.panel-body 
           table.table.table-striped#categories-table
             thead
@@ -99,6 +101,24 @@ block content
               tr
                 th Name
                 th Download Count
+            tbody
+    div.panel.panel-info#stations-crosspoint
+      div.panel-heading
+        a(data-toggle="collapse", data-target="#stations-crosspoint>.accordian", href="#stations-crosspoint") Stations Distribution
+      div.accordian.collapse
+        div.panel-body
+          select#source-list-dropdown(multiple='multiple')
+            //- option(value="#select-all-value") Select All
+            for station in stations
+              option(value="#{station.name}") #{station.name}
+          select#dest-list-dropdown(multiple='multiple')
+          //- div#matrix-grid
+          table.table.table-striped#matrix-grid
+            thead
+              tr
+                td Source
+                //- td 
+                td Destination
             tbody
     //- div.panel.panel-info#most-downloaded 
     //-   div.panel-heading

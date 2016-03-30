@@ -8,18 +8,21 @@ var catalogsDownload = {};
 
 var stationsUpload = {};
 var stationsDownload = {};
-var secondsAgo = 1678000; //* 2;
+var secondsAgo = 2678000; //* 2;
 // var secondsAgo = 2678000;
+
+var destinations = [];
 
 
 $( document ).ready(function() {
+    $(".metrics").hide();
+
     $catdv = catdv.RestApi;
     CATDV_API_URL = $("input[name='api_url']").val();
 
-
-          $("#categories-table").tablesorter();
-          $("#stations-table").tablesorter();
-          $("#clip-list").tablesorter();
+    $("#categories-table").tablesorter();
+    $("#stations-table").tablesorter();
+    $("#clip-list").tablesorter();
 
     SignIn(function(){
       $catdv.getClips(
@@ -32,10 +35,34 @@ $( document ).ready(function() {
           clips = data.items;
           calculateTOD(clips);
           calculateTODRecorded(clips);
+          calcUniqueDLArray(clips);
+          // console.log(destinations)
+
+          $('#source-list-dropdown').multiselect({
+            includeSelectAllOption: true,
+            selectAllValue: 'select-all-value',
+            nonSelectedText: 'Source',
+            onChange: fillMatrixGrid,
+            onSelectAll: fillMatrixGrid
+          });
+
+          addDestinations('#dest-list-dropdown',destinations);
+
+          $('#dest-list-dropdown').multiselect({
+            includeSelectAllOption: true,
+            selectAllValue: 'select-all-value',
+            nonSelectedText: 'Destination',
+            onChange: fillMatrixGrid,
+            onSelectAll: fillMatrixGrid
+          });
+
           applyFilter();
 
           google.charts.load('current', {'packages':['corechart']});
           google.charts.setOnLoadCallback(drawChart);
+
+          $(".metrics").show(500);
+
         },
         function(error){
           console.log("error");
@@ -64,7 +91,13 @@ $( document ).ready(function() {
             $('.slider-time-end').html(formatDT(endDate));
         }
     });
+
 });
+
+$(document).on("click", "#matrix-grid-left div", function(event){
+  console.log($(this).text());
+  drawLines(stationsUpload[$(this).text()]);
+})
 
 function SignIn( callback )
 {
@@ -106,6 +139,8 @@ function SignIn( callback )
 }
 
 function applyFilter(){
+  $("div.line").remove(); //Remove all existing lines
+
   filteredClips = filterClipsByDate(clips, startDate, endDate);
   populateDataList(filteredClips);
   populateCategoryUploadArray(filteredClips);
@@ -120,6 +155,80 @@ function applyFilter(){
   $("#clip-list").trigger("update");
 }
 
+function fillMatrixGrid(option, checked, select){
+  // console.log($('#source-list-dropdown'));
+  $("div.line").remove(); //Remove all existing lines
+
+  var selectedSources = getSelectValues($('#source-list-dropdown')[0]) ;
+  var selectedDestinations = getSelectValues($('#dest-list-dropdown')[0]) ;
+
+  $("#matrix-grid tbody").empty();
+  $("#matrix-grid tbody").append("<tr id='data'></tr>");
+  $("#matrix-grid tbody tr#data").append("<td id='matrix-grid-left' class=''></td>");
+  $("#matrix-grid tbody tr#data").append("<td id='matrix-grid-right' class='pull-right'></td>");
+  for( var i = 0 ; i < selectedSources.length; i++){
+    var sourceVal = selectedSources[i] || "";
+    $("#matrix-grid-left").append("<div id='ls_"+sourceVal+"' class='box source'>"+sourceVal+"</div>");
+  }
+  for( var i = 0 ; i < selectedDestinations.length; i++){
+    var destVal = selectedDestinations[i] || "";
+    $("#matrix-grid-right").append("<div id='ld_"+destVal+"' class='box dest'>"+destVal+"</div>");
+  }
+  setTimeout(function(){
+    // drawLines(stationsUpload["KGTV"]);
+  },500);
+
+}
+
+function drawLines(clips){
+  $("div.line").remove(); //Remove all existing lines
+  for(var i = 0; i < clips.length; i++){
+    // console.log(clips[i]);
+    for(var j = 0; j < clips[i].downloadedBy.length; j++){
+        // console.log(clips[i].userFields.U5 +' -> ' + clips[i].downloadedBy[j] );
+        addLine(clips[i].userFields.U5, clips[i].downloadedBy[j] )
+    }
+  }
+
+  // addLine()
+  // jsPlumb.ready(function() {
+  //   jsPlumb.connect({
+  //     source: $("#ls_KGTV"),
+  //     target: $("#ld_KSHB"),
+  //   })
+  //   for(var i = 0; i < clips.length; i++){
+
+  //   }
+  // });
+}
+
+function addLine(sourceName, destName){
+
+  var source = $("#ls_"+sourceName);
+  var sourcePos = source.position();
+  var sourceWidth = source.outerWidth();
+  var sourceHeight = source.outerHeight();
+  if(!source || !sourcePos) return;
+
+  var dest = $("#ld_"+destName);
+  var destPos = dest.position();
+  var destWidth = dest.outerWidth();
+  var destPadWidth = dest.outerWidth() - dest.width();
+  var destHeight = dest.outerHeight();
+  if(!dest || !destPos) return;
+
+  var x1 = sourcePos.left + sourceWidth// / 2
+  var y1 = sourcePos.top + sourceHeight / 2
+  
+  var x2 = destPos.left + destPadWidth /2 // + destWidth / 2
+  var y2 = destPos.top + destHeight / 2
+
+  // console.log(sourceName +' -> ' + destName );
+  var name = "ln_"+sourceName+"_"+destName;
+  var existingValue = $("#"+name).data('value') || 0;
+  createLine(x1,y1, x2,y2, existingValue + 1, name );
+  // drawNumber((x1+x2)/2, (y1+y2)/2, 7);
+}
 
 
 function populateDataList(clips){
@@ -180,6 +289,25 @@ function calculateStationOwnedDownloads(clips){
     // console.log("index "+ index + " is id " + this.id);
     $(this).find(".dl-owned-count").html(countTotalDownloads(stationsUpload[sName]));
   })
+}
+
+//CLips- Calculate Unique downloads array
+function calcUniqueDLArray(clips){
+  for(var i = 0 ; i < clips.length; i++){
+    clips[i].downloadedBy = [];
+    var dlBy = null;
+    if(dlBy = Object.byString(clips[i], "userFields.U13")){
+      var arr = dlBy.match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/g) || [];
+      for(var j= 0 ; j < arr.length; j++){
+        var station = arr[j].match(/<\s*p[^>]*>([^<]*)<\s*\/\s*p\s*>/)[1].split(' @ ')[0]
+        var destStr = station.toUpperCase().replace(/(@|\.)/g, "_").trim();
+        if(destStr == "") continue;
+        clips[i].downloadedBy.push(destStr);
+        destinations.push(destStr);
+      }
+    }
+  }
+  destinations = destinations.unique();
 }
 
 function calculateDownloadsPerUploadForStations(clips){
@@ -328,6 +456,12 @@ function drawChart() {
   var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
 
   chart.draw(data, options);
+}
+
+function addDestinations(element, destinations){
+  for(var i = 0 ; i < destinations.length; i++){
+    $(element).append("<option value='"+destinations[i]+"'>"+destinations[i]+"</option>");
+  }
 }
 
 // http://10.50.3.150:8080/api/5/clips?filter=and((importSrc.importDate()newer(172000))%2526include%253DuserFields
