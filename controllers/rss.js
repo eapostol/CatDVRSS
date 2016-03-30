@@ -10,49 +10,9 @@ var config = require('../catdv_config');
 var resParser = require('../libs/response-parser');
 var mongoose = require('mongoose');
 var validUrl = require('valid-url');
+var stations = require('../config/stations');
+var feeds = require('../config/feeds');
 
-var feeds = [
-	{title: "Shared", catID: 4102, display: "Shared", newer: 86400 * 2 },
-	{title: "BreakingNews", catID: 1727, display: "Breaking News", newer: 86400 },
-	{title: "Enterprise", catID: 4130, display: "Enterprise", newer: 86400 * 2 },
-	{title: "TheNow", catID: 3802, display: "The Now", newer: 86400 * 2 },
-	{title: "DCBureau", catID: 5652, display: "DC Bureau", newer: 86400 * 2 }
-]
-
-var stations = [
-	{name: "" },
-	{name: "TheNow" },
-	{name: "KERO" },
-	{name: "KGTV" },
-	{name: "KGUN" },
-	{name: "KIVI" },
-	{name: "KJRH" },
-	{name: "KMGH" },
-	{name: "KMTV" },
-	{name: "KNXV" },
-	{name: "KSAW" },
-	{name: "KSHB" },
-	{name: "KTNV" },
-	{name: "WCPO" },
-	{name: "WEWS" },
-	{name: "WFTS" },
-	{name: "WFTX" },
-	{name: "WGBA" },
-	{name: "WKBW" },
-	{name: "WMAR" },
-	{name: "WPTV" },
-	{name: "WRTV" },
-	{name: "WSYM" },
-	{name: "WTMJ" },
-	{name: "WTVF" },
-	{name: "WXYZ" },
-	{name: "TheList" },
-	{name: "Newsy" },
-	{name: "DWYM" },
-	{name: "PolitiFact" },
-	{name: "DC Bureau" },
-	{name: "Scripps" },
-]
 
 //define the schema
 var feedItemSchema = new mongoose.Schema({
@@ -492,13 +452,5 @@ exports.deleteItem = function(req, res) {
   	// console.log("Delete: " + req.body.id)
   	res.redirect('/rss');
   })
-
-}
-
-exports.metrics = function(req, res) {
-  // req.assert('id', 'ID cannot be blank').notEmpty();
-	res.render('metrics', {
-	    title: 'Metrics'
-	});
 
 }

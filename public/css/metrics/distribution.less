@@ -1,0 +1,41 @@
+/*#matrix-grid{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#matrix-grid .spacer{
+  width: 70%;
+}*/
+
+#matrix-grid .box{
+  padding: 5px;
+  box-shadow: 0 10px 6px -6px #777;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 3px solid #eee;
+  margin: 5px;
+}
+#matrix-grid-left .box{
+  cursor: pointer;
+}
+
+div.line{
+  transform-origin: 0 100%;
+  height: 5px; /* Line width of 3 */
+  background: rgba(0,0,0,.5); /* Black fill */
+  z-index: 998;
+}
+
+div.number-label{
+  /*transform-origin: 0 100%;*/
+  /*border: 3px solid blue;*/
+  position: static;
+  background-color: white;
+  margin-top: -10px;
+  min-width: 20px;
+  text-align: center;
+  width: fit-content;
+  z-index: 999;
+  border-radius: 20px;
+  border:2px solid rgba(0,0,0,.5);
+}
