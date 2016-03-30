@@ -41,6 +41,7 @@ function getSelectValues(select) {
   return result;
 }
 
+//http://stackoverflow.com/questions/11743386/can-i-draw-a-line-using-jquery/11743466#11743466
 function createLine(x1,y1, x2,y2, value, name){
   var length = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
   var angle  = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
@@ -78,3 +79,18 @@ function drawNumber(x, y, num, parent){
 
   return number;
 }
+
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};

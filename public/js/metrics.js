@@ -8,7 +8,10 @@ var catalogsDownload = {};
 
 var stationsUpload = {};
 var stationsDownload = {};
-var secondsAgo = 2678000; //* 2;
+console.log(parseInt(getUrlParameter("days")));
+var daysAgo = parseInt(getUrlParameter("days")) || 30;
+var secondsAgo = 86400 * daysAgo; //* 2;
+
 // var secondsAgo = 2678000;
 
 var destinations = [];
@@ -33,6 +36,8 @@ $( document ).ready(function() {
         function(data){
           // console.log(JSON.stringify(data));
           clips = data.items;
+          var excludeCatalogs = getUrlParameter("exCats") || "";
+          removeCatalogs(clips, excludeCatalogs.split(",") );
           calculateTOD(clips);
           calculateTODRecorded(clips);
           calcUniqueDLArray(clips);
@@ -136,6 +141,14 @@ function SignIn( callback )
             alert(e);
         }
     });
+}
+
+function removeCatalogs(clips, ArrayOfCatalogs){
+  var deleteIndexs = []
+  for(var i = clips.length -1 ; i >= 0; i--){
+    console.log(clips[i].catalogName);
+    if($.inArray(clips[i].catalogName, ArrayOfCatalogs) > -1 ) clips.splice(i, 1);
+  }
 }
 
 function applyFilter(){
@@ -432,13 +445,14 @@ function formatDT(__dt) {
 
 function drawChart() {
   dataArray = [
-    ['Hour', 'imported', 'recorded']
+    // ['Hour', 'Imported', 'Recorded']
+    ['Hour', 'Imported']
   ];
   for(var i = 0; i < 24; i++){
     dataArray.push([ 
       i,
       findItemsWith(clips, "hourOfday", i.toString(), "equals" ).length,
-      findItemsWith(clips, "hourOfdayRecorded", i.toString(), "equals" ).length,
+      // findItemsWith(clips, "hourOfdayRecorded", i.toString(), "equals" ).length,
       ]);
   }
 
@@ -446,7 +460,7 @@ function drawChart() {
   var data = google.visualization.arrayToDataTable(dataArray);
 
   var options = {
-    title: 'Uploads by the hour',
+    title: 'Uploads by the hour (CST)',
     curveType: 'function',
     legend: { position: 'bottom' },
     hAxis: { gridlines: { count: 24 } },
