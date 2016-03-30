@@ -8,6 +8,7 @@ exports.metrics = function(req, res) {
   res.render('metrics', {
       title: 'Metrics', 
       API_URL: "http://"+config.catdv_url+":"+config.catdv_port+"/api",
+      MASTERCAT_URL: "http://"+config.catdv_url+":"+config.catdv_port+"/catdv-web2/",
       username: config.catdv_user,
       password: config.catdv_pwd, 
       feeds: feeds,

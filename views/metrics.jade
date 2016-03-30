@@ -2,7 +2,7 @@ extends layout
 
 block links
   link(rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css")
-  link(rel='stylesheet', href='/css/vendor/bootstrap-multiselect.css', type='text/css')
+  //- link(rel='stylesheet', href='/css/vendor/bootstrap-multiselect.css', type='text/css')
   //- script(src="http://code.jquery.com/jquery-2.2.2.js"   integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="   crossorigin="anonymous")
 block footer
   script(src="https://www.gstatic.com/charts/loader.js")
@@ -46,11 +46,15 @@ block content
     .form-group
       label.col-sm-2.control-label(for='txtPassword') Password
       .col-sm-10
-        input.form-control(type='text', name='txtPassword', placeholder='Password' value=password)
+        input.form-control(type='password', name='txtPassword', placeholder='Password' value=password)
     .form-group
-      label.col-sm-2.control-label(for='txtPassword') URL
+      label.col-sm-2.control-label(for='api_url') API URL
       .col-sm-10
         input.form-control(type='text', name='api_url', placeholder='API URL' value=API_URL)
+    .form-group
+      label.col-sm-2.control-label(for='mastercat_url') Mastercat URL
+      .col-sm-10
+        input.form-control(type='text', name='mastercat_url', placeholder='MASTERCAT URL' value=MASTERCAT_URL)
     .form-group
       .col-sm-offset-2.col-sm-10
         button#btnSignIn.btn.btn-primary(type='button') Sign in
