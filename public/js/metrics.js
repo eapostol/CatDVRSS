@@ -36,7 +36,7 @@ $( document ).ready(function() {
         function(data){
           // console.log(JSON.stringify(data));
           clips = data.items;
-          var excludeCatalogs = getUrlParameter("exCats") || "";
+          var excludeCatalogs = getUrlParameter("exCats") || "TheNow"; //default excludes TheNow catalog
           removeCatalogs(clips, excludeCatalogs.split(",") );
           calculateTOD(clips);
           calculateTODRecorded(clips);

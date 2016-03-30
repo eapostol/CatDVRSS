@@ -30,6 +30,14 @@ block content
           #slider-range
         p
           button#filter Filter
+    #links
+      h3 Links
+      p 
+        a.btn(href='/metrics?days=7') Last 7 Days
+      p 
+        a.btn(href='/metrics?days=30') Last 30 Days
+      p
+        a.btn(href='/metrics?exCats=none') w/TheNow
   form.form.form-horizontal.hidden(role='form')
     .form-group
       label.col-sm-2.control-label(for='txtUsername') Username
