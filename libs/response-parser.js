@@ -55,6 +55,7 @@ function cleanScript(description){
     .replace(/–/g, "-")   //long dash
     .replace(/¤W?[A-Z0-9]{1,2}/ig, "")   //Gromet
     .replace(/\]\](.*?)\[\[/g, "")   //double square inverted brackets
+    .replace(/â|€|¦/g, "-")   //odd characters
          
     .replace(/\d(\d|\w)\d\d/g, "")   //inews id
     .replace(/\[<mos>.*\]/g, "")  // Mos elements
