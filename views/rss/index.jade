@@ -15,7 +15,7 @@ block content
   hr
   h2 Manual entries
   ul.list-unstyled
-    for item in items
+    for item in items.slice(0, 10)
       li(id="#{item.id}", title="#{item.summary}")
         a(href="/rss/#{item.id}")!= item.feed + " - " + item.title + " - " + item.created_at.toFormat('MM/DD/YYYY HH:MI PP') + " - " +  (item.expires_at || new Date().addYears(-1)).toFormat('MM/DD/YYYY HH:MI PP') + " "
         form.form-inline(name="delete", action="/rss/delete", method="post")
@@ -25,6 +25,6 @@ block content
     else
       li sorry, no items!
 
-  a(href='/rss/newItem') 
+  a(href='/rss/newItem')
     i.fa.fa-plus
     New entry

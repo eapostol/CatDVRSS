@@ -8,7 +8,7 @@ module.exports = [
   {title: "DWYM", catID: 65757, display: "DWYM", newer: 86400 * 2 },
   {title: "MAPS", catID: 65777, display: "Maps", newer: 86400 * 2 },
   {title: "NEWSY", catID: 65754, display: "NEWSY", newer: 86400 * 2 },
-  {title: "SpecialRequests", catID: 65737, display: "Special Requests", newer: 86400 * 2 },
+  {title: "SpecReq", catID: 65737, display: "Special Requests", newer: 86400 * 2 },
   {title: "Weather", catID: 65742, display: "Weather", newer: 86400 * 2 },
   {title: "Wildcard", catID: 65725, display: "Wildcard", newer: 86400 * 2 },
   {title: "Syndication", catID: 59688, display: "Syndication", newer: 86400 * 2 },

@@ -47,7 +47,7 @@ function login_catdv( callback , failed_callback){
 	};
 	if( jsessionid !== null ){
 		return callback("Already Logged in");
-	} 
+	}
 	else console.log("no sess id logging in");
 	var request = http.request(options, function(res) {
 	  res.setEncoding('utf8');
@@ -135,7 +135,7 @@ function generateRSS(feedInfo, res){
 		var options = {
 		  host: catdv_url,
 		  port: catdv_port,
-		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSrc.importDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', // 
+		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSrc.importDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', //
 		  method: 'GET'
 		};
 		// console.log(options.path);
@@ -178,7 +178,7 @@ function generateRSS(feedInfo, res){
 		  method: 'GET'
 		};
 		console.log(options.path);
-		
+
 
 		var request = http.request(options, function(res) {
 		  var body = '';
@@ -194,7 +194,7 @@ function generateRSS(feedInfo, res){
 
 		  	// injectItem(feed, JSON.parse(body).data);
 			deferred.resolve();
-		  }); 
+		  });
 		  res.on('error', function(e) {
 			  console.log('problem with request ' + clipData.ID + ': ' + e.message);
 		  });
@@ -254,7 +254,7 @@ function generateRSS(feedInfo, res){
 			    res.send(xml);
 			});
 		} );
-	
+
 	/*feed.item({
 	    title:  'Test item id 38',
 	    description: 'use this for the content. It can include html.',
@@ -317,7 +317,7 @@ exports.getRSS  = function(req, res) {
 
 	var feed = findFeedByName(req.query.rss)
 	getPubKey( function( key )
-		{ 
+		{
 			login_catdv(
 				function()
 				{
@@ -327,7 +327,7 @@ exports.getRSS  = function(req, res) {
 					    res.set('Content-Type', 'application/json');
 					    res.send(msg);
 					}
-				}, 
+				},
 				function(){
 					var msg = [{error: "Login_failed"}];
 				    res.set('Content-Type', 'application/json');
@@ -336,7 +336,7 @@ exports.getRSS  = function(req, res) {
 			);
 		}
 	);
-	
+
 };
 
 
@@ -353,7 +353,7 @@ exports.getItem  = function(req, res) {
 	// console.log(findFeedByName(req.query.rss))
 	// var feed = findFeedByName(req.query.rss)
 	// getPubKey( function( key )
-	// 	{ 
+	// 	{
 	// 		login_catdv(
 	// 			function()
 	// 			{
@@ -363,7 +363,7 @@ exports.getItem  = function(req, res) {
 	// 				    res.set('Content-Type', 'application/json');
 	// 				    res.send(msg);
 	// 				}
-	// 			}, 
+	// 			},
 	// 			function(){
 	// 				var msg = [{error: "Login_failed"}];
 	// 			    res.set('Content-Type', 'application/json');
@@ -372,7 +372,7 @@ exports.getItem  = function(req, res) {
 	// 		);
 	// 	}
 	// );
-	
+
 };
 
 exports.index = function(req, res) {
@@ -384,7 +384,7 @@ exports.index = function(req, res) {
 		    title: 'RSS', items: items, feeds: feeds
 		});
 	});
-	
+
 };
 
 
@@ -395,7 +395,7 @@ exports.createItem = function(req, res) {
   res.render('rss/new', {
     title: 'RSS - New Item', feeds: feeds, stations: stations
   });
-	
+
 };
 
 
@@ -409,7 +409,7 @@ exports.postItem = function(req, res) {
   req.assert('description', 'Description cannot be blank').notEmpty();
   req.assert('feed', 'Feed cannot be blank').notEmpty();
   req.assert('expires', 'Experation must be an integer in days').isInt();
-  
+
   req.sanitize('title').escape();
   req.sanitize('station').escape();
   req.sanitize('summary').blacklist('\'"/')
@@ -427,7 +427,7 @@ exports.postItem = function(req, res) {
 
   var summary = resParser.buildSummary(req.body);
 
-  var thisItem = new Item({ 
+  var thisItem = new Item({
   	feed: req.body.feed,
   	title: (req.body.station) + " " + (req.body.title),
   	summary: (summary),
