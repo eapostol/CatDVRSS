@@ -25,6 +25,7 @@ module.exports = [
   {name: "WTMJ" },
   {name: "WTVF" },
   {name: "WXYZ" },
+  {name: "FLINV" },
   {name: "Graphics HUB" },
   {name: "TheList" },
   {name: "Newsy" },
