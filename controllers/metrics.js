@@ -6,11 +6,11 @@ var feeds = require('../config/feeds');
 exports.metrics = function(req, res) {
   // req.assert('id', 'ID cannot be blank').notEmpty();
   res.render('metrics', {
-      title: 'Metrics', 
+      title: 'Metrics',
       API_URL: "http://"+config.catdv_url+":"+config.catdv_port+"/api",
-      MASTERCAT_URL: "http://"+config.catdv_url+":"+config.catdv_port+"/catdv-web2/",
+      MASTERCAT_URL: "http://"+config.catdv_url+":"+config.catdv_port+"/catdv/",
       username: config.catdv_user,
-      password: config.catdv_pwd, 
+      password: config.catdv_pwd,
       feeds: feeds,
       stations: stations
   });

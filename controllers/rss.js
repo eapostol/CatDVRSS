@@ -261,7 +261,7 @@ function generateRSS(feedInfo, res){
 	/*feed.item({
 	    title:  'Test item id 38',
 	    description: 'use this for the content. It can include html.',
-	    url: 'http://216.21.175.195:8080/catdv-web2/clip-details.jsp?id='+38, // link to the item
+	    url: 'http://216.21.175.195:8080/catdv/clip-details.jsp?id='+38, // link to the item
 	    // categories: ['Category 1','Category 2','Category 3','Category 4'], // optional - array of item categories
 	    author: 'Guest Author', // optional - defaults to feed author property
 	    date: 'May 27, 2012', // any format that js Date can parse.
@@ -298,7 +298,7 @@ function injectItem( feed, clipData){
 		feed.item({
 	    title:  clipData.userFields.U5 + " " + (typeof clipData.userFields.U6 !== "undefined" && clipData.userFields.U6 !== "" ? clipData.userFields.U6 : clipData.name),
 	    description: description,
-	    url: 'http://'+catdv_url+':'+catdv_port+'/catdv-web2/clip-details.jsp?id='+clipData.ID, // link to the item
+	    url: 'http://'+catdv_url+':'+catdv_port+'/catdv/clip-details.jsp?id='+clipData.ID, // link to the item
 	    author: clipData.userFields.U5, // optional - defaults to feed author property
 	    date: (typeof clipData.modifiedDate !== null ? clipData.modifiedDate : Date.now()), // any format that js Date can parse.
 	    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
