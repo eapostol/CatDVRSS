@@ -84,7 +84,7 @@ function getPubKey( callback ){
 	  port: catdv_port,
 	  path: '/api/4/session/key',
 	  method: 'GET',
-    agent: false 
+    agent: false
 	};
 	var request = http.request(options, function(res) {
 	  res.setEncoding('utf8');
@@ -136,7 +136,7 @@ function generateRSS(feedInfo, res){
 		var options = {
 		  host: catdv_url,
 		  port: catdv_port,
-		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSrc.importDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', //
+		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((clip.modifiedDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', //
 		  method: 'GET',
       agent: false
 		};
