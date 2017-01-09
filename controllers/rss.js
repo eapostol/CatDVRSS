@@ -136,7 +136,7 @@ function generateRSS(feedInfo, res){
 		var options = {
 		  host: catdv_url,
 		  port: catdv_port,
-		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((clip.modifiedDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', //
+		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSource.importedDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', //
 		  method: 'GET',
       agent: false
 		};
