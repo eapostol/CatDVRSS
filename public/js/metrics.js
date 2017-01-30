@@ -31,9 +31,9 @@ $( document ).ready(function() {
     SignIn(function(){
       $catdv.getClips(
         {
-          filter: "and((importSrc.importDate)newer("+secondsAgo+"))",
+          filter: "and((importSource.importDate)newer("+secondsAgo+"))",
           include: "userFields,metadata"
-        },  //path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSrc.importDate)newer('+feedInfo.newer+'))&include=userFields'
+        },  //path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSource.importDate)newer('+feedInfo.newer+'))&include=userFields'
         function(data){
           // console.log(JSON.stringify(data));
           clips = data.items;
@@ -93,7 +93,7 @@ $( document ).ready(function() {
             startDate = new Date(ui.values[0]*1000); //.format("yyyy-mm-dd hh:ii:ss");
             $('.slider-time-start').html(formatDT(startDate));
 
-            endDate = new Date(ui.values[1]*1000); //.format("yyyy-mm-dd hh:ii:ss");                
+            endDate = new Date(ui.values[1]*1000); //.format("yyyy-mm-dd hh:ii:ss");
             $('.slider-time-end').html(formatDT(endDate));
         }
     });
@@ -120,8 +120,8 @@ function SignIn( callback )
             var encryptedPassword = encrypt(password, reply.key);
             // console.log(encryptedPassword);
 
-            // $catdv.login(username, encryptedPassword, 
-            $catdv.loginUnsecure(username, password, 
+            // $catdv.login(username, encryptedPassword,
+            $catdv.loginUnsecure(username, password,
               function(response)
               {
                 // $.cookie("username", username);
@@ -233,7 +233,7 @@ function addLine(sourceName, destName){
 
   var x1 = sourcePos.left + sourceWidth// / 2
   var y1 = sourcePos.top + sourceHeight / 2
-  
+
   var x2 = destPos.left + destPadWidth /2 // + destWidth / 2
   var y2 = destPos.top + destHeight / 2
 
@@ -255,7 +255,7 @@ function populateDataList(clips){
   }
 }
 
-//Fill catalogs upload array with clips in this catalog 
+//Fill catalogs upload array with clips in this catalog
 function populateCategoryUploadArray(clips){
   $(".category").each(function(index){
     var cTitle = this.id.split(":")[0]
@@ -276,7 +276,7 @@ function populateCategoryDownloadArray(clips){
   })
 }
 
-//Fill stations upload array with clips uploaded by each station 
+//Fill stations upload array with clips uploaded by each station
 function populateStationUploadArray(clips){
   $(".station").each(function(index){
     var sName = this.id.split(":")
@@ -286,7 +286,7 @@ function populateStationUploadArray(clips){
   })
 }
 
-//Fill stations download array with clips downloaded by each station 
+//Fill stations download array with clips downloaded by each station
 function populateStationDownloadArray(clips){
   $(".station").each(function(index){
     var sName = this.id.split(":")
@@ -295,7 +295,7 @@ function populateStationDownloadArray(clips){
     $(this).find(".dlcount").html(stationsDownload[sName].length);
   })
 }
- 
+
 //Calculate each clips download count and sum them by station
 function calculateStationOwnedDownloads(clips){
   $(".station").each(function(index){
@@ -362,7 +362,7 @@ function filterClipsByDate(clips, fromDate, toDate){
   var retArr = [];
   for(var i = 0 ; i < clips.length; i++){
     var clipDate = new Date(clips[i]["recordedDate"]) //recorded date is not always accurate (taken from video file)
-    if( clipDate > fromDate && clipDate < toDate){ 
+    if( clipDate > fromDate && clipDate < toDate){
       retArr.push(clips[i])
     }
   }
@@ -398,7 +398,7 @@ function findItemsWith(clips, field, value, operator){
 
 function calculateTOD(clips){
   for(var i = 0 ; i < clips.length; i++){
-    var clipDate = moment(Object.byString(clips[i], "userFields.U9"), "DD/MM/YYYY  h:mm:ssa").toDate();  
+    var clipDate = moment(Object.byString(clips[i], "userFields.U9"), "DD/MM/YYYY  h:mm:ssa").toDate();
     // console.log(clipDate);
     clips[i].hourOfday = clipDate.getHours();
 
@@ -451,7 +451,7 @@ function drawChart() {
     ['Hour', 'Imported']
   ];
   for(var i = 0; i < 24; i++){
-    dataArray.push([ 
+    dataArray.push([
       i,
       findItemsWith(clips, "hourOfday", i.toString(), "equals" ).length,
       // findItemsWith(clips, "hourOfdayRecorded", i.toString(), "equals" ).length,
@@ -480,4 +480,4 @@ function addDestinations(element, destinations){
   }
 }
 
-// http://10.50.3.150:8080/api/5/clips?filter=and((importSrc.importDate()newer(172000))%2526include%253DuserFields
+// http://10.50.3.150:8080/api/5/clips?filter=and((importSource.importDate()newer(172000))%2526include%253DuserFields

@@ -5,7 +5,7 @@ var catdv;
         }
         _RestApi.prototype.getApiUrl = function (path) {
             var apiUrl = ((typeof (CATDV_API_URL) != "undefined") && (CATDV_API_URL != null)) ? CATDV_API_URL : "/catdv-web2/api";
-            return apiUrl + "/5/" + path + (jsessionid != null ? ';jsessionid='+jsessionid : '');
+            return apiUrl + "/4/" + path + (jsessionid != null ? ';jsessionid='+jsessionid : '');
         };
         _RestApi.prototype.registerLogInHandler = function (login_handler) {
             this.catdv_login_handler = login_handler;
