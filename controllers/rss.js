@@ -47,6 +47,8 @@ function login_catdv( callback , failed_callback){
 	  //path: '/api/info',
 	  method: 'GET'
 	};
+  console.log(options.path);
+
 	if( jsessionid !== null ){
 		return callback("Already Logged in");
 	}
@@ -88,6 +90,8 @@ function getPubKey( callback ){
 	  method: 'GET'
     // agent: false
 	};
+  console.log(options.path);
+  
 	var request = http.request(options, function(res) {
 	  res.setEncoding('utf8');
 	  res.on('data', function (body) {
