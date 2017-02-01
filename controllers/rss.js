@@ -150,7 +150,7 @@ function generateRSS(feedInfo, res){
 		  method: 'GET'
       // agent: false
 		};
-		console.log("http://" + options.host +  ":"  +  options.port +  ""  +  options.path);
+		// console.log("http://" + options.host +  ":"  +  options.port +  ""  +  options.path);
 
 		var request = http.request(options, function(res) {
 		  var body = '';
