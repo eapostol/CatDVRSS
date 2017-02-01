@@ -31,6 +31,8 @@ var catdv_url = config.catdv_url;
 var catdv_port = config.catdv_port;
 var catdv_user = config.catdv_user;
 var catdv_pwd = config.catdv_pwd;
+var api_path = config.api_path;
+var api_version = config.api_version;
 var catdv_pubkey = '';
 var jsessionid = null;
 
@@ -41,7 +43,7 @@ function login_catdv( callback , failed_callback){
 	  host: catdv_url,
 	  port: catdv_port,
 	  //path: '/api/4/session?usr='+catdv_user+'&epwd='+encryptPwd(catdv_pwd, catdv_pubkey), // encryption function not working
-	  path: '/api/4/session?usr='+catdv_user+'&pwd='+catdv_pwd, // not encrypted but doesnt matter once its running on same server (will be localhost)
+	  path: api_path +'/' + api_version + '/session?usr='+catdv_user+'&pwd='+catdv_pwd, // not encrypted but doesnt matter once its running on same server (will be localhost)
 	  //path: '/api/info',
 	  method: 'GET'
 	};
@@ -82,16 +84,16 @@ function getPubKey( callback ){
 	var options = {
 	  host: catdv_url,
 	  port: catdv_port,
-	  path: '/api/4/session/key',
-	  method: 'GET',
-    agent: false
+	  path: api_path +'/' + api_version + '/session/key',
+	  method: 'GET'
+    // agent: false
 	};
 	var request = http.request(options, function(res) {
 	  res.setEncoding('utf8');
 	  res.on('data', function (body) {
 	  	catdv_pubkey = JSON.parse(body).data.key;
 	    // console.log('pubkey: ' + catdv_pubkey);
-		callback(catdv_pubkey);
+		  callback(catdv_pubkey);
 	  });
 	  res.on('error', function(e) {
 		  console.log('problem with request getPubKey: ' + e.message);
@@ -136,9 +138,9 @@ function generateRSS(feedInfo, res){
 		var options = {
 		  host: catdv_url,
 		  port: catdv_port,
-		  path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSource.importedDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', //
-		  method: 'GET',
-      agent: false
+		  path: api_path +'/' + api_version + '/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSource.importedDate)newer('+feedInfo.newer+'))&include=userFields', //or((clip.recordedDate)newer(172800))', // OFF -- extra 0 for testing  OR &desc=recordedDate&take=50', //
+		  method: 'GET'
+      // agent: false
 		};
 		// console.log(options.path);
 
@@ -176,9 +178,9 @@ function generateRSS(feedInfo, res){
 		var options = {
 		  host: catdv_url,
 		  port: catdv_port,
-		  path: '/api/4/clips/'+clipID+';jsessionid='+jsessionid,
-		  method: 'GET',
-      agent: false
+		  path: api_path +'/' + api_version + '/clips/'+clipID+';jsessionid='+jsessionid,
+		  method: 'GET'
+      // agent: false
 		};
 		console.log(options.path);
 

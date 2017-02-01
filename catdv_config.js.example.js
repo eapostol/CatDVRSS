@@ -1,10 +1,12 @@
 module.exports = {
-	catdv_url: "catdv.example.com",
+	catdv_url: "10.50.2.151",
 	catdv_port: 8080,
-	catdv_user: 'username',
-	catdv_pwd: 'secret',
-	this_host: "rss.example.com",
+	catdv_user: 'rss',
+	catdv_pwd: 'rssC@t',
+	api_path: '/catdv/api',
+	api_version: '4',
+	this_host: "127.0.0.1",
 	this_port: 8082,
-  	temp_uploads: "/tmp/resumable/",
-  	uploads_dir: "/tmp/uploads/"
+	temp_uploads: "/tmp/resumable/",
+  uploads_dir: "/Volumes/Promise Pegasus1/FTP/WebUploads/"
 }

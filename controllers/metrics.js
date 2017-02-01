@@ -7,7 +7,7 @@ exports.metrics = function(req, res) {
   // req.assert('id', 'ID cannot be blank').notEmpty();
   res.render('metrics', {
       title: 'Metrics',
-      API_URL: "http://"+config.catdv_url+":"+config.catdv_port+"/api",
+      API_URL: "http://"+config.catdv_url+":"+config.catdv_port+"/catdv/api",
       MASTERCAT_URL: "http://"+config.catdv_url+":"+config.catdv_port+"/catdv/",
       username: config.catdv_user,
       password: config.catdv_pwd,
