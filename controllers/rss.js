@@ -169,7 +169,7 @@ function generateRSS(feedInfo, res){
 		request.end();
 		request.on("error", function(e){
 		    // ECONNRESET error is triggered here...
-		    console.info(e);
+		    console.error(e);
 		});
 	}
 
