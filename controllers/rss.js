@@ -330,26 +330,28 @@ function findFeedByName(name){
 exports.getRSS  = function(req, res) {
 
 	var feed = findFeedByName(req.query.rss)
-  if(feed == null){
+  if(feed){
+    getPubKey( function( key )
+      {
+        login_catdv(
+          function()
+          {
+            generateRSS(feed, res);
+          },
+          function(){
+            var msg = [{error: "Login_failed"}];
+              res.set('Content-Type', 'application/json');
+              res.send(msg);
+          }
+        );
+      }
+    );
+   }
+   else{
     var msg = [{error: "Feed not found: " + req.query.rss}];
     res.set('Content-Type', 'application/json');
     res.send(msg);
   }
-	getPubKey( function( key )
-		{
-			login_catdv(
-				function()
-				{
-					generateRSS(feed, res);
-				},
-				function(){
-					var msg = [{error: "Login_failed"}];
-				    res.set('Content-Type', 'application/json');
-				    res.send(msg);
-				}
-			);
-		}
-	);
 
 };
 
