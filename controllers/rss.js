@@ -83,6 +83,10 @@ function login_catdv( callback , failed_callback){
 }
 
 function getPubKey( callback ){
+  if(catdv_pubkey != '' && catdv_pubkey != null){
+    callback(catdv_pubkey);
+    return;
+  }
 	var options = {
 	  host: catdv_url,
 	  port: catdv_port,
@@ -90,8 +94,8 @@ function getPubKey( callback ){
 	  method: 'GET'
     // agent: false
 	};
-  console.log(options.path);
-  
+  console.log("http://" + options.host +  ":"  +  options.port +  ""  +  options.path);
+
 	var request = http.request(options, function(res) {
 	  res.setEncoding('utf8');
 	  res.on('data', function (body) {
@@ -146,7 +150,7 @@ function generateRSS(feedInfo, res){
 		  method: 'GET'
       // agent: false
 		};
-		console.log(options.path);
+		console.log("http://" + options.host +  ":"  +  options.port +  ""  +  options.path);
 
 		var request = http.request(options, function(res) {
 		  var body = '';
@@ -186,7 +190,8 @@ function generateRSS(feedInfo, res){
 		  method: 'GET'
       // agent: false
 		};
-		console.log(options.path);
+    console.log("http://" + options.host +  ":"  +  options.port +  ""  +  options.path);
+
 
 
 		var request = http.request(options, function(res) {
@@ -325,17 +330,17 @@ function findFeedByName(name){
 exports.getRSS  = function(req, res) {
 
 	var feed = findFeedByName(req.query.rss)
+  if(feed == null){
+    var msg = [{error: "Feed not found: " + req.query.rss}];
+    res.set('Content-Type', 'application/json');
+    res.send(msg);
+  }
 	getPubKey( function( key )
 		{
 			login_catdv(
 				function()
 				{
-					if(feed != null) generateRSS(feed, res);
-					else {
-						var msg = [{error: "Feed not found: " + req.query.rss}];
-					    res.set('Content-Type', 'application/json');
-					    res.send(msg);
-					}
+					generateRSS(feed, res);
 				},
 				function(){
 					var msg = [{error: "Login_failed"}];
