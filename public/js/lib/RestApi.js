@@ -142,7 +142,7 @@ var catdv;
                     type: "GET",
                     url: this.getApiUrl(path),
                     headers: {
-                        "CatDV-Client": "WC2",
+                        // "CatDV-Client": "WC2",
                         // "Pragma": "no-cache",
                         // "Cache-Control":  'no-cache',
                         // "Access-Control-Allow-Origin": "*"
@@ -184,7 +184,7 @@ var catdv;
                     type: method,
                     url: this.getApiUrl(path),
                     headers: {
-                        "CatDV-Client": "WC2"
+                        // "CatDV-Client": "WC2"
                         // "Access-Control-Allow-Origin": "*"
                     },
                     contentType: "application/json; charset=UTF-8",

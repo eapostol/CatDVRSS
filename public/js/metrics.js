@@ -8,7 +8,6 @@ var catalogsDownload = {};
 
 var stationsUpload = {};
 var stationsDownload = {};
-console.log(parseInt(getUrlParameter("days")));
 var daysAgo = parseInt(getUrlParameter("days")) || 30;
 var secondsAgo = 86400 * daysAgo; //* 2;
 
@@ -21,6 +20,7 @@ $( document ).ready(function() {
     $(".metrics").hide();
 
     $catdv = catdv.RestApi;
+    catdv.API_URL = $("input[name='api_url']").val();
     CATDV_API_URL = $("input[name='api_url']").val();
     CATDV_CLIENT_URL = $("input[name='mastercat_url']").val();
 
@@ -31,7 +31,7 @@ $( document ).ready(function() {
     SignIn(function(){
       $catdv.getClips(
         {
-          filter: "and((importSource.importDate)newer("+secondsAgo+"))",
+          filter: "and((importSource.importedDate)newer("+secondsAgo+"))",
           include: "userFields,metadata"
         },  //path: '/api/4/clips;jsessionid='+jsessionid+'?filter=and((catalog.id)EQ('+catalogID+'))and((importSource.importDate)newer('+feedInfo.newer+'))&include=userFields'
         function(data){
@@ -107,9 +107,10 @@ $(document).on("click", "#matrix-grid-left div", function(event){
 
 function SignIn( callback )
 {
-
+  // console.log("signing in");
   $catdv.getSessionKey(function(reply)
     {
+        // console.log("session");
         try
         {
             var username = $("input[name='txtUsername']").val();

@@ -21,7 +21,7 @@ block content
   #sidebar
     #time-range
         p
-          | Time Range: 
+          | Time Range:
         p
           span.slider-time-start
         p
@@ -32,11 +32,11 @@ block content
           button#filter Filter
     #links
       h3 Links
-      p 
+      p
         a.btn(href='/metrics?days=1') Last 24 Hours
-      p 
+      p
         a.btn(href='/metrics?days=7') Last 7 Days
-      p 
+      p
         a.btn(href='/metrics?days=30') Last 30 Days
       p
         a.btn(href='/metrics?exCats=none') w/TheNow
@@ -61,11 +61,11 @@ block content
       .col-sm-offset-2.col-sm-10
         button#btnSignIn.btn.btn-primary(type='button') Sign in
   div.metrics(style="display:none;")
-    div.panel.panel-info#catalogs 
+    div.panel.panel-info#catalogs
       div.panel-heading
         a(data-toggle="collapse", data-target="#catalogs>.accordian", href="#catalogs") Catalogs
       div.accordian.collapse.in
-        div.panel-body 
+        div.panel-body
           table.table.table-striped#categories-table
             thead
               tr
@@ -80,11 +80,11 @@ block content
                   td.ulcount
               else
                 div no feeds found.
-    div.panel.panel-info#stations 
+    div.panel.panel-info#stations
       div.panel-heading
         a(data-toggle="collapse", data-target="#stations>.accordian", href="#stations") Stations
       div.accordian.collapse
-        div.panel-body 
+        div.panel-body
           table.table.table-striped#stations-table
             thead
               tr
@@ -109,7 +109,7 @@ block content
       div.panel-heading
         a(data-toggle="collapse", data-target="#clips>.accordian", href="#clips") All Clips
       div.accordian.collapse
-        div.panel-body 
+        div.panel-body
           table.table.table-striped#clip-list
             thead
               tr
@@ -122,98 +122,27 @@ block content
       div.accordian.collapse
         div.panel-body
           select#source-list-dropdown(multiple='multiple')
-            //- option(value="#select-all-value") Select All
             for station in stations
               option(value="#{station.name}") #{station.name}
           select#dest-list-dropdown(multiple='multiple')
-          //- div#matrix-grid
           table.table.table-striped#matrix-grid
             thead
               tr
                 td Source
-                //- td 
                 td Destination
             tbody
-    //- div.panel.panel-info#most-downloaded 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#most-downloaded>.accordian", href="#most-downloaded") Stations Most Downloaded
-    //-   div.accordian.collapse
-    //-     div.panel-body
-    //-       div.weekly.panel.panel-info
-    //-         div.panel-heading Weekly
-    //-         div.panel-body
-    //-       div.monthly.panel.panel-info
-    //-         div.panel-heading Monthly
-    //-         div.panel-body
-    //- div.panel.panel-info#top-5-downloaded 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#top-5-downloaded>.accordian", href="#top-5-downloaded") Top 5 downloaded
-    //-   div.accordian.collapse
-    //-     div.panel-body
-    //- div.panel.panel-info#total-downloaded-by-station 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#total-downloaded-by-station>.accordian", href="#total-downloaded-by-station ") Download Totals
-    //-   div.accordian.collapse
-    //-     div.panel-body
-    //-       div.monthly.panel.panel-info
-    //-         div.panel-heading Monthly
-    //-         div.panel-body
-    //- div.panel.panel-info#upload-count-by-catalog 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#upload-count-by-catalog>.accordian", href="#upload-count-by-catalog") Upload Count by Catalog
-    //-   div.accordian.collapse
-    //-     div.panel-body
-    //-       div.weekly.panel.panel-info
-    //-         div.panel-heading Weekly
-    //-         div.panel-body
-    //- div.panel.panel-info#download-count-by-catalog 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#download-count-by-catalog>.accordian", href="#download-count-by-catalog") Download Count by Catalog
-    //-   div.accordian.collapse
-    //-     div.panel-body
-    //-       div.weekly.panel.panel-info
-    //-         div.panel-heading Weekly
-    //-         div.panel-body
-    //- div.panel.panel-info#politifact 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#politifact>.accordian", href="#politifact") Politifact
-    //-   div.accordian.collapse
-    //-     div.panel-body
-    //- div.panel.panel-info#market-specific 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#market-specific>.accordian", href="#market-specific") Market Specific
-    //-   div.accordian.collapse
-    //-     div.panel-body
-    //- div.panel.panel-info#time-of-day-traffic 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#time-of-day-traffic>.accordian", href="#time-of-day-traffic ") Time of Day Traffic
-    //-   div.accordian.collapse
-    //-     div.panel-body
-    //- div.panel.panel-info#reporter-stats.hidden 
-    //-   div.panel-heading
-    //-     a(data-toggle="collapse", data-target="#reporter-stats>.accordian", href="#reporter-stats") Reporter Stats
-    //-   div.accordian.collapse
-    //-     div.panel-body
   div
     #curve_chart
 
 //- TRACKING:
 //- STATIONS WITH MOST DOWNLOADED CONTENT EACH WEEK/MONTH – Fairly straight forward. But we’ll need to change the station field of the bridge to a dropdown with options. This will avoid variations (e.g. thenow vs “The Now”)
- 
 //- TOP FIVE STORIES DOWNLOADED EACH WEEK – how about of stories uploaded this week top 5 with the most downloads? Seems picky but its much easier to query since we don’t track downloads by week (only total)
- 
 //- TOTAL STATION DOWNLOAD COUNT EVERY TWO WEEKS - OR ONCE A MONTH – Of the stories uploaded this month grouped by station, get a sum of the download counts
- 
-//- WEEKLY UPLOAD COUNT TO EACH CATALOG - ENTERPRISE, SHARED, BREAKING NEWS, DC BUREAU, ETC (NO NEED FOR NOW) – Straight forward – count clips in each catalog that have date greater than a week ago. 
- 
+//- WEEKLY UPLOAD COUNT TO EACH CATALOG - ENTERPRISE, SHARED, BREAKING NEWS, DC BUREAU, ETC (NO NEED FOR NOW) – Straight forward – count clips in each catalog that have date greater than a week ago.
 //- WEEKLY DOWNLOAD COUNT FOR EACH CATALOG (SAME AS ABOVE) – from the clips found above, count the number of downloads
- 
 //- AUTOMATED REPORT FOR POLITIFACT CONTENT (DEBATE & WEEKLY POLITIFACT PKG PRODUCED BY WFTS) – need more details
- 
 //- ANY MARKET SPECIFIC DETAILS - LIKE LOOKING AT ITEMS SHARED (UPLOAD/DOWNLOAD) AMONGST THE OHIO PROPERTIES - CINCY/CLEVELAND), ARIZONA (PHOENIX/TUCSON)  -- need clarification
- 
-//- METRICS ON TIME OF DAY IN WHICH CONTENT IS UPLOADED/DOWNLOADED THE MOST (OBVIOUSLY NOW IS A FACTOR SO REMOVE THEM FROM THE EQUATION) – from the clips uploaded in the past week/month, round the time down to the hour and graph the results. 
- 
- 
+//- METRICS ON TIME OF DAY IN WHICH CONTENT IS UPLOADED/DOWNLOADED THE MOST (OBVIOUSLY NOW IS A FACTOR SO REMOVE THEM FROM THE EQUATION) – from the clips uploaded in the past week/month, round the time down to the hour and graph the results.
+
 //- LONG TERM:
 //- REPORTER CONTENT TRACKING - THEIR STORIES THAT TRAVEL/SHARED THE MOST – this will require newsroom workflow to conform to a certain convention in inews and on the bridge. If we can nail this down it would be pretty simple.
