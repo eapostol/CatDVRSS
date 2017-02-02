@@ -190,7 +190,7 @@ function generateRSS(feedInfo, res){
 		  method: 'GET'
       // agent: false
 		};
-    console.log("http://" + options.host +  ":"  +  options.port +  ""  +  options.path);
+    // console.log("http://" + options.host +  ":"  +  options.port +  ""  +  options.path);
 
 
 
@@ -253,7 +253,7 @@ function generateRSS(feedInfo, res){
 	var feed = new RSS({
 	    title: 'E.W.Scripps ' + feedInfo.display,
 	    description: feedInfo.display,
-	    site_url: 'http://'+config.rss_host+':'+config.this_port,
+	    site_url: 'http://'+config.rss_host+':'+config.rss_port,
       feed_url: this.site_url+'/rss/feed?rss='+feedInfo.title,
 	    //image_url: 'http://example.com/icon.png',
 	    copyright: '2015 E.W. Scripps',
