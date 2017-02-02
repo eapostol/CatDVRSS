@@ -232,7 +232,7 @@ function generateRSS(feedInfo, res){
 				for (var i = 0; i < items.length; i++ ){
 					var url = items[i].link;
 				    if (!validUrl.isUri(url)){
-			        url = "http://"+config.this_host+":"+config.this_port+"/rss/" +items[i].id;
+			        url = "http://"+config.rss_host+":"+config.rss_port+"/rss/" +items[i].id;
 				    }
 
 					//console.log(items[i].title);
@@ -253,7 +253,7 @@ function generateRSS(feedInfo, res){
 	var feed = new RSS({
 	    title: 'E.W.Scripps ' + feedInfo.display,
 	    description: feedInfo.display,
-	    site_url: 'http://'+config.this_host+':'+config.this_port,
+	    site_url: 'http://'+config.rss_host+':'+config.this_port,
       feed_url: this.site_url+'/rss/feed?rss='+feedInfo.title,
 	    //image_url: 'http://example.com/icon.png',
 	    copyright: '2015 E.W. Scripps',
@@ -409,7 +409,7 @@ exports.createItem = function(req, res) {
 	res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 	res.setHeader("Expires", "0"); // Proxies.
   res.render('rss/new', {
-    title: 'RSS - New Item', feeds: feeds, stations: stations
+    title: 'RSS - New Item', feeds: feeds, stations: stations, rss_host:  config.rss_host, rss_port: config.rss_port
   });
 
 };

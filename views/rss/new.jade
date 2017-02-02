@@ -4,9 +4,9 @@ block links
 block content
   //- img(src="/images/Scripps_Family_Frist_Logo_FINAL.png")
   h1 The Bridge/New RSS
-  p.lead 
+  p.lead
 
-    form.col-sm-10.well.form#dataForm(name="add-item", method="post")
+    form.col-sm-10.well.form#dataForm(name="add-item", action="http://#{rss_host}:#{rss_port}/rss/newItem", method="post")
 
         input(type='hidden', name='_csrf', value=token)
         div.form-group.col-sm-6
@@ -16,7 +16,7 @@ block content
               for feed in feeds
                 option #{feed.display}
               else
-                option no feeds found. 
+                option no feeds found.
               //- option Breaking News
               //- option Shared
               //- option Enterprise
@@ -26,11 +26,11 @@ block content
             label Station *
 
             select.form-control(type="select", name="station", required="")
-              option 
+              option
               for station in stations
                 option #{station.name}
               else
-                option no stations found. 
+                option no stations found.
             //- input.form-control(type="text", name="station", placeholder="", required="")
         div.form-group.col-sm-12
             label Source
@@ -63,7 +63,7 @@ block content
           div.form-group.col-sm-6
             label Polarity
             select.form-control(type="select", name="polarity")
-              option 
+              option
               option V
               option H
           div.form-group.col-sm-6
@@ -90,7 +90,7 @@ block content
         div.form-group.col-sm-6
             label Format
             select.form-control(type="select", name="format")
-              option 
+              option
               option VO
               option VO/SOT
               option PKG
@@ -105,7 +105,7 @@ block content
             small (days)
         div.form-group.col-sm-12.hidden
             label
-              |Link 
+              |Link
               small (optional)
             input.form-control(type="text", name="link", placeholder="http://example.com/video?id=33")
         div.form-group.col-sm-12
@@ -121,7 +121,7 @@ block content
             div#progressNum 0%
         div.col-sm-12
             input.btn.btn-primary(type="submit", value="Submit")
-            h2#submitMessage Please leave this window open. Once file is done uploading, the form will submit. 
+            h2#submitMessage Please leave this window open. Once file is done uploading, the form will submit.
 
 block footer
   //- script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
