@@ -12,6 +12,8 @@ var mongoose = require('mongoose');
 var validUrl = require('valid-url');
 var stations = require('../config/stations');
 var feeds = require('../config/feeds');
+var cache_expiration = 1 * 1000 * 60; // 1 minute
+var feedCache = {};
 
 
 //define the schema
@@ -139,8 +141,6 @@ function encryptPwd(pwd, pubkey){
 }
 
 function generateRSS(feedInfo, res){
-	//onsole.log(feedInfo.display);
-
 
 	function getClipsFromCat(catalogID, num, callback){
 		var options = {
@@ -159,16 +159,16 @@ function generateRSS(feedInfo, res){
 		  	body += res;
 		  });
 		  res.on('end', function(){
-		    var deferreds = [];
-		  	var clipsData = JSON.parse(body).data.items
-		  	for (index in clipsData) {
-		  		injectItem(feed, clipsData[index]);
-		  		// deferreds.push(getClip(clipsData[index].ID));
-			}
-
-			when.all(deferreds).then(function () {
-				callback();
-			});
+        try{
+  		  	var clipsData = JSON.parse(body).data.items
+  		  	for (index in clipsData) {
+  		  		injectItem(feed, clipsData[index]);
+    			}
+          callback();
+        }
+        catch(exception){
+          console.error(exception);
+        }
 		  })
 		  res.on('error', function(e) {
 			  console.log('problem with request get Clips: ' + e.message);
@@ -201,12 +201,6 @@ function generateRSS(feedInfo, res){
 		  	body += res
 		  });
 		  res.on('end', function(){
-		  	//========================
-
-
-
-
-		  	// injectItem(feed, JSON.parse(body).data);
 			deferred.resolve();
 		  });
 		  res.on('error', function(e) {
@@ -261,43 +255,30 @@ function generateRSS(feedInfo, res){
 	    ttl: '60',
 	});
 
+  //if it has not expired, send the recent data
+  if(feedCache[feedInfo.display] && feedCache[feedInfo.display].cache_exp > Date.now()){
+    console.log("sending cached data: " + feedInfo.display );
+    var xml = feedCache[feedInfo.display].cahced_data.xml();
+    res.set('Content-Type', 'application/rss+xml');
+    res.send(xml);
+    return;
+  }
+  console.log("data expired.. Getting new data: " + feedInfo.title );
 	getClipsFromCat(feedInfo.catID, 20, function(){
 			getAddedItems(feedInfo.display, function(){
+        feedCache[feedInfo.display] = {};
+        feedCache[feedInfo.display].cahced_data = feed;
+        feedCache[feedInfo.display].cache_exp = Date.now() + cache_expiration;
 				var xml = feed.xml();
-			    res.set('Content-Type', 'application/rss+xml');
-			    res.send(xml);
+			  res.set('Content-Type', 'application/rss+xml');
+			  res.send(xml);
 			});
 		} );
-
-	/*feed.item({
-	    title:  'Test item id 38',
-	    description: 'use this for the content. It can include html.',
-	    url: 'http://216.21.175.195:8080/catdv/clip-details.jsp?id='+38, // link to the item
-	    // categories: ['Category 1','Category 2','Category 3','Category 4'], // optional - array of item categories
-	    author: 'Guest Author', // optional - defaults to feed author property
-	    date: 'May 27, 2012', // any format that js Date can parse.
-	    lat: 33.417974, //optional latitude field for GeoRSS
-	    long: -111.933231, //optional longitude field for GeoRSS
-	    //enclosure: {url:'...', file:'path-to-file'}, // optional enclosure
-	    // custom_elements: [
-	    //   {'itunes:author': 'John Doe'},
-	    //   {'itunes:subtitle': 'A short primer on table spices'},
-	    //   {'itunes:image': {
-	    //     _attr: {
-	    //       href: 'http://example.com/podcasts/everything/AllAboutEverything/Episode1.jpg'
-	    //     }
-	    //   }},
-	    //   {'itunes:duration': '7:04'}
-	    // ]
-	});*/
-
-	// cache the xml to send to clients
 }
 
 function injectItem( feed, clipData){
-  	// console.log("ID= " )
-  	if(clipData.userFields !== null && typeof clipData.userFields !== "undefined" ){
-  		var description = "" ; // (typeof clipData.userFields.U1 !== "undefined" ?
+	if(clipData.userFields !== null && typeof clipData.userFields !== "undefined" ){
+		var description = "" ;
 		description += "<br/>-Filename: " + clipData.name;
 		description += "<br/>-Embargo: " + (clipData.userFields.U3 || "None");
 		description += "<br/>-Script: " + (clipData.userFields.U1 || "No Script");
@@ -315,8 +296,7 @@ function injectItem( feed, clipData){
 	    guid: (typeof clipData.ID !== "undefined" ? clipData.ID : null)
 		});
 	}
-	else console.log('clip ' + clipData.ID + ": NO USER FIELDS!!! SKIPPED!!")
-
+  else console.log('clip ' + clipData.ID + ": NO USER FIELDS!!! SKIPPED!!")
 }
 
 function findFeedByName(name){
