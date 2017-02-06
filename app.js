@@ -34,9 +34,6 @@ var mkdirp = require('mkdirp');
  * Controllers (route handlers).
  */
 var homeController = require('./controllers/home');
-var userController = require('./controllers/user');
-var apiController = require('./controllers/api');
-var contactController = require('./controllers/contact');
 var metricsController = require('./controllers/metrics');
 var rssController = require('./controllers/rss');
 var uploadController = require('./controllers/upload');
@@ -158,7 +155,7 @@ app.post('/upload', multipartMiddleware, function(req, res){
   });
   cache = null; // Enable garbage collection
   fs.writeFile("req.txt", reqString );
-    // console.log(req); 
+    // console.log(req);
     var status = null;
 
     resumable.post(req, function(status, filename, original_filename, identifier){
@@ -167,8 +164,8 @@ app.post('/upload', multipartMiddleware, function(req, res){
           var fs = require('fs');
           var outpath = config.uploads_dir;
           req.body.summary = resParser.buildSummary(req.body);
-          
-          mkdirp(outpath, function(err) { 
+
+          mkdirp(outpath, function(err) {
             if (err) return false;
             var wstream = fs.createWriteStream( outpath + filename);
             fs.writeFile(outpath + filename + ".xml", resParser.buildXML(req.body))

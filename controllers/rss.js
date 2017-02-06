@@ -225,10 +225,9 @@ function generateRSS(feedInfo, res){
 			else{
 				for (var i = 0; i < items.length; i++ ){
 					var url = items[i].link;
-				    if (!validUrl.isUri(url)){
-			        url = "http://"+config.rss_host+":"+config.rss_port+"/rss/" +items[i].id;
-				    }
-
+				  if (!validUrl.isUri(url)){
+			      url = "http://"+config.rss_host+":"+config.rss_port+"/rss/" +items[i].id;
+				  }
 					//console.log(items[i].title);
 					feed.item({
 					    title:  items[i].title,
