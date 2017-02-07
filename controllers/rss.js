@@ -168,6 +168,9 @@ function generateRSS(feedInfo, res){
         }
         catch(exception){
           console.error(exception);
+          catdv_pubkey = null;
+          jsessionid = null;
+          generateRSS(feedInfo, res);
         }
 		  })
 		  res.on('error', function(e) {
@@ -344,29 +347,6 @@ exports.getItem  = function(req, res) {
 		    title: 'RSS', item: item,
 		});
 	});
-	// console.log(req.params.id)
-	// console.log(findFeedByName(req.query.rss))
-	// var feed = findFeedByName(req.query.rss)
-	// getPubKey( function( key )
-	// 	{
-	// 		login_catdv(
-	// 			function()
-	// 			{
-	// 				if(feed != null) generateRSS(feed, res);
-	// 				else {
-	// 					var msg = [{error: "Feed not found: " + req.query.rss}];
-	// 				    res.set('Content-Type', 'application/json');
-	// 				    res.send(msg);
-	// 				}
-	// 			},
-	// 			function(){
-	// 				var msg = [{error: "Login_failed"}];
-	// 			    res.set('Content-Type', 'application/json');
-	// 			    res.send(msg);
-	// 			}
-	// 		);
-	// 	}
-	// );
 
 };
 
