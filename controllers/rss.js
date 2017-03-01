@@ -383,6 +383,7 @@ exports.postItem = function(req, res) {
   req.assert('station', 'Station cannot be blank').notEmpty();
   req.assert('description', 'Description cannot be blank').notEmpty();
   req.assert('feed', 'Feed cannot be blank').notEmpty();
+  req.assert('formate', 'Format cannot be blank').notEmpty();
   req.assert('expires', 'Experation must be an integer in days').isInt();
 
   req.sanitize('title').escape();
