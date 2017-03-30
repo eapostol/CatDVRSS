@@ -29,3 +29,10 @@ node_modules
 *catdv_config.js
 *.lnk
 Uploads/*
+config/*
+
+config/passport.js
+
+config/secrets.js
+
+config/stations.js

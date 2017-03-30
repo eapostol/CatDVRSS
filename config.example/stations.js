@@ -19,7 +19,7 @@ module.exports = [
   {name: "WGBA" },
   {name: "WKBW" },
   {name: "WMAR" },
-  {name: "WPTV" },
+  {name: "WPTV" }, 
   {name: "WRTV" },
   {name: "WSYM" },
   {name: "WTMJ" },
