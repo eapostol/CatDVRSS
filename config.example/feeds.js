@@ -1,5 +1,5 @@
 
-module.exports = [
+module.exports = [ 
   {title: "Shared", catID: 4102, display: "Shared", newer: 86400 * 2 },
   {title: "BreakingNews", catID: 1727, display: "Breaking News", newer: 86400 },
   {title: "Enterprise", catID: 4130, display: "Enterprise", newer: 86400 * 2 },
@@ -12,6 +12,7 @@ module.exports = [
   {title: "SpecReq", catID: 65737, display: "Special Requests", newer: 86400 * 2 },
   {title: "Weather", catID: 65742, display: "Weather", newer: 86400 * 2 },
   {title: "Wildcard", catID: 65725, display: "Wildcard", newer: 86400 * 2 },
+  {title: "Promotions", catID: 183405, display: "Promotions", newer: 86400 * 2 },
   {title: "Syndication", catID: 59688, display: "Syndication", newer: 86400 * 2 },
   {title: "GraphicsBreakingNews", catID: 68000, display: "Graphics BreakingNews", newer: 86400 * 2 },
   {title: "GraphicsHub", catID: 60202, display: "Graphics Hub", newer: 86400 * 2 },
