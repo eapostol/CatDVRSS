@@ -40,6 +40,8 @@ block content
         a.btn(href='/metrics?days=30') Last 30 Days
       p
         a.btn(href='/metrics?exCats=none') w/TheNow
+      p
+        a.btn(href='/metrics?exCats=#{feeds.map(function(feed){ return (feed.title == "TheNow" ? "" : feed.title);}).join(",")}') Only TheNow
   form.form.form-horizontal.hidden(role='form')
     .form-group
       label.col-sm-2.control-label(for='txtUsername') Username
