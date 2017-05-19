@@ -398,8 +398,9 @@ function findItemsWith(clips, field, value, operator){
 }
 
 function calculateTOD(clips){
+  // console.log("HELLO")
   for(var i = 0 ; i < clips.length; i++){
-    var clipDate = moment(Object.byString(clips[i], "userFields.U9"), "DD/MM/YYYY  h:mm:ssa").toDate();
+    var clipDate = moment(Object.byString(clips[i], "importSource.importedDate"), "DD/MM/YYYY  h:mm:ssa").toDate();
     // console.log(clipDate);
     clips[i].hourOfday = clipDate.getHours();
 
@@ -459,7 +460,7 @@ function drawChart() {
       ]);
   }
 
-  // console.log(JSON.stringify(dataArray) );
+  console.log(JSON.stringify(dataArray) );
   var data = google.visualization.arrayToDataTable(dataArray);
 
   var options = {
