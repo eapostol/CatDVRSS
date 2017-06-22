@@ -14,6 +14,7 @@ $(document).ready(function() {
 
 var r = new Resumable({
     target:'/upload',
+    maxFileSize: 4*1024*1024*1024,
     chunkSize:1*1024*1024,
     simultaneousUploads:4,
     testChunks:false,
@@ -46,7 +47,7 @@ if(!r.support) {
         r.cancel();
         $("#dropZone").trigger("dragleave");
         return false;
-      } 
+      }
       // console.log("file Added");
       // console.log(file);
 
