@@ -32,5 +32,6 @@ module.exports = [
   {name: "DWYM" },
   {name: "PolitiFact" },
   {name: "DC Bureau" },
+  {name: "HELLOSWFL" },
   {name: "Scripps" },
 ]
